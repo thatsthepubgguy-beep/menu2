@@ -1271,7 +1271,7 @@
             <div class="splash-divider-line"></div>
         </div>
         <button class="btn-splash" onclick="goToMenu()">
-            <span data-en>Explore Menu</span><span data-am>ምናሌ ይመልከቱ</span>
+            <span data-en>Explore Menu</span><span data-am>ማውጫ ይመልከቱ</span>
         </button>
         <div class="splash-about-link" onclick="openModal('about-modal')">
             <span data-en>About Us →</span><span data-am>ስለ እኛ →</span>
@@ -1435,7 +1435,7 @@
                     daily.
                 </p>
                 <p class="about-text" data-am style="display:none">
-                    እንኳን ወደ አርዳ ቡና እና ፓስትሪ ደህና መጡ — በአዳማ ልብ ውስጥ የሚገኝ የጣፋጭ ጣዕሞች መናኸሪያ። እያንዳንዱን ኩባያ ከፍቅር ጋር እናዘጋጃለን።
+                    እንኳን ወደ አርዳ ቡና እና ፓስትሪ በደህና መጡ  በመሃል አዳማ የሚገኝ ................ እንኛን ስለመረጡ እናመሰግናለን።
                 </p>
 
                 <div class="about-info-card">
@@ -1553,11 +1553,11 @@
         // ── MENU DATA (from Arda Opening Menu photo) ──
         const menuData = [
             // HOT DRINKS
-            { id: 1, name: "Espresso", nameAm: "ኤስፕሬሶ", price: 80, cat: "hot", rating: 4.9, img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop" },
-            { id: 2, name: "Macchiato", nameAm: "ማቺያቶ", price: 100, cat: "hot", rating: 4.9, img: "https://images.unsplash.com/photo-1485808191679-5f86510bd9d4?w=400&h=300&fit=crop" },
+            { id: 1, name: "Espresso", nameAm: "እስፕሬሶ", price: 80, cat: "hot", rating: 4.9, img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop" },
+            { id: 2, name: "Macchiato", nameAm: "ማኪያቶ", price: 100, cat: "hot", rating: 4.9, img: "https://images.unsplash.com/photo-1485808191679-5f86510bd9d4?w=400&h=300&fit=crop" },
             { id: 3, name: "Cappuccino", nameAm: "ካፑቺኖ", price: 200, cat: "hot", rating: 4.6, img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&h=300&fit=crop" },
             { id: 4, name: "Hot Chocolate", nameAm: "ሞቃት ቸኮሌት", price: 200, cat: "hot", rating: 4.5, img: "https://images.unsplash.com/photo-1572286258217-f679c6b06082?w=400&h=300&fit=crop" },
-            { id: 5, name: "Mocha", nameAm: "ሞካ", price: 240, cat: "hot", rating: 4.7, img: "https://tse4.mm.bing.net/th/id/OIP.M_JG-d9XjgYeKdMOFgogfwHaNM?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 5, name: "Mocha", nameAm: "ሞቻ", price: 240, cat: "hot", rating: 4.7, img: "https://tse4.mm.bing.net/th/id/OIP.M_JG-d9XjgYeKdMOFgogfwHaNM?rs=1&pid=ImgDetMain&o=7&rm=3" },
             { id: 6, name: "Matcha Latte", nameAm: "ማቻ ላቴ", price: 270, cat: "hot", rating: 4.4, img: "https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?w=400&h=300&fit=crop" },
             { id: 7, name: "Milk", nameAm: "ወተት", price: 95, cat: "hot", rating: 4.2, img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop" },
             { id: 8, name: "Tea", nameAm: "ሻይ", price: 50, cat: "hot", rating: 4.0, img: "https://tse2.mm.bing.net/th/id/OIP.nX5D7cWioqp9boe9OdL1GQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" },
@@ -1566,22 +1566,22 @@
             { id: 11, name: "Special Tea (Large)", nameAm: "ልዩ ሻይ (ትልቅ)", price: 130, cat: "hot", rating: 4.5, img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&h=300&fit=crop" },
 
             // COLD DRINKS
-            { id: 12, name: "Iced Latte", nameAm: "አይስ ላቴ", price: 230, cat: "cold", rating: 4.7, img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop" },
-            { id: 13, name: "Caramel Iced Latte", nameAm: "ካራሜል አይስ ላቴ", price: 260, cat: "cold", rating: 4.8, img: "https://images.unsplash.com/photo-1568909344668-6f14a07b56a0?w=400&h=300&fit=crop" },
-            { id: 14, name: "Iced Chocolate Latte", nameAm: "አይስ ቸኮሌት ላቴ", price: 260, cat: "cold", rating: 4.6, img: "https://tse3.mm.bing.net/th/id/OIP.HsYh97QJ2eBPZdM5lUsWLgHaLG?rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 15, name: "Iced Mocha", nameAm: "አይስ ሞካ", price: 260, cat: "cold", rating: 4.7, img: "https://images.unsplash.com/photo-1538587888044-79f13ddd7e49?w=400&h=300&fit=crop" },
-            { id: 16, name: "Iced Strawberry Latte", nameAm: "አይስ ስትሮቤሪ ላቴ", price: 270, cat: "cold", rating: 4.8, img: "https://tse4.mm.bing.net/th/id/OIP.S2ewBl4tyYWmNhJlL-rPxQHaLI?rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 17, name: "Iced Matcha Latte", nameAm: "አይስ ማቻ ላቴ", price: 330, cat: "cold", rating: 4.6, img: "https://tse2.mm.bing.net/th/id/OIP.H2cGzRD85MQ8zmLrhNzpSgHaLD?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 12, name: "Iced Latte", nameAm: "አይስድ ላቴ", price: 230, cat: "cold", rating: 4.7, img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop" },
+            { id: 13, name: "Caramel Iced Latte", nameAm: "ካራሜል አይስድ ላቴ", price: 260, cat: "cold", rating: 4.8, img: "https://images.unsplash.com/photo-1568909344668-6f14a07b56a0?w=400&h=300&fit=crop" },
+            { id: 14, name: "Iced Chocolate Latte", nameAm: "አይስድ ቸኮሌት ላቴ", price: 260, cat: "cold", rating: 4.6, img: "https://tse3.mm.bing.net/th/id/OIP.HsYh97QJ2eBPZdM5lUsWLgHaLG?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 15, name: "Iced Mocha", nameAm: "አይስድ ሞቻ", price: 260, cat: "cold", rating: 4.7, img: "https://images.unsplash.com/photo-1538587888044-79f13ddd7e49?w=400&h=300&fit=crop" },
+            { id: 16, name: "Iced Strawberry Latte", nameAm: "አይስድ ስትሮቤሪ ላቴ", price: 270, cat: "cold", rating: 4.8, img: "https://tse4.mm.bing.net/th/id/OIP.S2ewBl4tyYWmNhJlL-rPxQHaLI?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 17, name: "Iced Matcha Latte", nameAm: "አይስድ ማቻ ላቴ", price: 330, cat: "cold", rating: 4.6, img: "https://tse2.mm.bing.net/th/id/OIP.H2cGzRD85MQ8zmLrhNzpSgHaLD?rs=1&pid=ImgDetMain&o=7&rm=3" },
             { id: 18, name: "Shaken Hibiscus", nameAm: "ሺከን ሂቢስከስ", price: 170, cat: "cold", rating: 4.5, img: "https://tse3.mm.bing.net/th/id/OIP.Dlk-TGaiFUjVCT1-6fad-wHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" },
 
             // SHAKES & FRAPPES
-            { id: 19, name: "Mocha Frappe", nameAm: "ሞካ ፍራፔ", price: 280, cat: "shakes", rating: 4.7, img: "https://tse4.mm.bing.net/th/id/OIP.95_-PyqkgjPnKHz6MUFg8QHaJg?rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 20, name: "Caramel Frappe", nameAm: "ካራሜል ፍራፔ", price: 270, cat: "shakes", rating: 4.8, img: "https://th.bing.com/th/id/OIP.G-g7Hu63Mgsn-upK0vzN3AHaLH?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 21, name: "Tiramisu Frappe", nameAm: "ቲራሚሱ ፍራፔ", price: 270, cat: "shakes", rating: 4.7, img: "https://tse3.mm.bing.net/th/id/OIP.9QrHhZEu1kiM0Nuhgd8TjQHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 22, name: "Chocolate Frappe", nameAm: "ቸኮሌት ፍራፔ", price: 270, cat: "shakes", rating: 4.6, img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&h=300&fit=crop" },
-            { id: 23, name: "Oreo Milkshake", nameAm: "ኦሪዮ ሚልክሽኬ", price: 350, cat: "shakes", rating: 4.9, img: "https://tse2.mm.bing.net/th/id/OIP.f1jmVTJ_xPGOBAgpNZyzmgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 24, name: "Strawberry Milkshake", nameAm: "ስትሮቤሪ ሚልክሽኬ", price: 340, cat: "shakes", rating: 4.8, img: "https://www.lovefromtheoven.com/wp-content/uploads/2023/02/strawberry-milkshake-24.jpg" },
-            { id: 25, name: "Vanilla Frappe", nameAm: "ቫኒላ ፍራፔ", price: 270, cat: "shakes", rating: 4.6, img: "https://tse4.mm.bing.net/th/id/OIP.-o0mf7eN8IFAMFDJyLOWVgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 19, name: "Mocha Frappe", nameAm: "ሞቻ ፍራፔ", price: 280, cat: "shakes", rating: 4.7, img: "https://tse4.mm.bing.net/th/id/OIP.95_-PyqkgjPnKHz6MUFg8QHaJg?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 20, name: "Caramel Frappe", nameAm: "ካራሜል ፍራፕ", price: 270, cat: "shakes", rating: 4.8, img: "https://th.bing.com/th/id/OIP.G-g7Hu63Mgsn-upK0vzN3AHaLH?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 21, name: "Tiramisu Frappe", nameAm: "ቲራሚሱ ፍራፕ", price: 270, cat: "shakes", rating: 4.7, img: "https://tse3.mm.bing.net/th/id/OIP.9QrHhZEu1kiM0Nuhgd8TjQHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 22, name: "Chocolate Frappe", nameAm: "ቸኮሌት ፍራፕ", price: 270, cat: "shakes", rating: 4.6, img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&h=300&fit=crop" },
+            { id: 23, name: "Oreo Milkshake", nameAm: "ኦሪዮ ሚልክ ሼክ", price: 350, cat: "shakes", rating: 4.9, img: "https://tse2.mm.bing.net/th/id/OIP.f1jmVTJ_xPGOBAgpNZyzmgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 24, name: "Strawberry Milkshake", nameAm: "ስትሮቤሪ ሚልክ ሼክ", price: 340, cat: "shakes", rating: 4.8, img: "https://www.lovefromtheoven.com/wp-content/uploads/2023/02/strawberry-milkshake-24.jpg" },
+            { id: 25, name: "Vanilla Frappe", nameAm: "ቫኒላ ፍራፕ", price: 270, cat: "shakes", rating: 4.6, img: "https://tse4.mm.bing.net/th/id/OIP.-o0mf7eN8IFAMFDJyLOWVgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3" },
 
             // JUICE
             { id: 26, name: "Strawberry Juice", nameAm: "ስትሮቤሪ ጁስ", price: 260, cat: "juice", rating: 4.7, img: "https://images.unsplash.com/photo-1497534446932-c925b458314e?w=400&h=300&fit=crop" },
@@ -1604,7 +1604,7 @@
             { id: 39, name: "Tiramisu", nameAm: "ቲራሚሱ", price: 265, cat: "dessert", rating: 4.9, img: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop" },
             { id: 40, name: "Chocolate Cake", nameAm: "ቸኮሌት ኬክ", price: 220, cat: "dessert", rating: 4.7, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop" },
             { id: 41, name: "Caramel Cake", nameAm: "ካራሜል ኬክ", price: 220, cat: "dessert", rating: 4.6, img: "https://tse4.mm.bing.net/th/id/OIP.RLXr2In5kfCrxx-tBwV4WQHaLH?rs=1&pid=ImgDetMain&o=7&rm=3" },
-            { id: 42, name: "Boxegna", nameAm: "ቦጠኛ", price: 180, cat: "dessert", rating: 4.4, img: "https://th.bing.com/th/id/OIP.2a38FnwtV2C6JtYEAqMItgHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 42, name: "Boxegna", nameAm: "ቦክሰኛ", price: 180, cat: "dessert", rating: 4.4, img: "https://th.bing.com/th/id/OIP.2a38FnwtV2C6JtYEAqMItgHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" },
             { id: 43, name: "White Forest Gateau (F)", nameAm: "ዋይት ፎረስት ኬክ (ፆም)", price: 230, cat: "dessert", rating: 4.5, img: "https://tse2.mm.bing.net/th/id/OIP.xgUEHq_-PgKuQ_PJqyN8gQHaJo?rs=1&pid=ImgDetMain&o=7&rm=3" },
 
             // BOTTLED DRINKS
