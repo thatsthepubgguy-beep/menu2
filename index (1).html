@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Arda — Coffee & Pastry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A84C;
+            --gold-light: #E8C96B;
+            --gold-dim: rgba(201, 168, 76, 0.15);
+            --bg: #0D0D0D;
+            --bg2: #161616;
+            --bg3: #1E1E1E;
+            --card: #1A1A1A;
+            --surface: #242424;
+            --border: rgba(201, 168, 76, 0.2);
+            --text: #F0EAD6;
+            --text-muted: #9B9380;
+            --text-dim: #5A5347;
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ── SCREENS ── */
+        .screen {
+            position: absolute;
+            inset: 0;
+            transition: opacity 0.4s, transform 0.4s;
+        }
+
+        .screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        /* ── SPLASH ── */
+        #splash {
+            background: radial-gradient(ellipse at 50% 30%, #1C1205 0%, var(--bg) 70%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .splash-glow {
+            position: absolute;
+            top: 18%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.10) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1
+            }
+        }
+
+        .splash-logo-ring {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg2);
+            box-shadow: 0 0 34px rgba(201, 168, 76, 0.28), inset 0 0 20px rgba(201, 168, 76, 0.04);
+            margin-bottom: 26px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .splash-logo-ring svg {
+            width: 58px;
+            height: 58px;
+        }
+
+        .splash-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 46px;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 3px;
+            animation: fadeUp 0.8s 0.1s ease both;
+            text-align: center;
+        }
+
+        .splash-sub {
+            font-size: 10px;
+            letter-spacing: 5px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-transform: uppercase;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+
+        .splash-tagline {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 14px;
+            animation: fadeUp 0.8s 0.3s ease both;
+        }
+
+        .splash-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            animation: fadeUp 0.8s 0.4s ease both;
+        }
+
+        .splash-stars {
+            color: #F5C518;
+            letter-spacing: 2px;
+            font-size: 16px;
+        }
+
+        .splash-rating-txt {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .splash-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 36px;
+            width: 240px;
+            animation: fadeUp 0.8s 0.45s ease both;
+        }
+
+        .splash-divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .splash-divider-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        .btn-splash {
+            margin-top: 34px;
+            padding: 16px 56px;
+            background: linear-gradient(135deg, var(--gold), #A07830);
+            color: #0D0D0D;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 2.5px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 24px rgba(201, 168, 76, 0.35);
+            animation: fadeUp 0.8s 0.55s ease both;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-splash:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(201, 168, 76, 0.45);
+        }
+
+        .btn-splash:active {
+            transform: scale(0.97);
+        }
+
+        .splash-about-link {
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-dim);
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            animation: fadeUp 0.8s 0.65s ease both;
+            transition: color 0.2s;
+        }
+
+        .splash-about-link:hover {
+            color: var(--gold);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* ── HEADER ── */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .header-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg2);
+        }
+
+        .header-logo svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .header-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+        }
+
+        .header-sub-name {
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 50px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .lang-btn:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+        }
+
+        /* ── MENU SCREEN ── */
+        #menu-screen {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .menu-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 90px;
+        }
+
+        .menu-scroll::-webkit-scrollbar {
+            width: 0;
+        }
+
+        /* ── CATEGORIES ── */
+        .categories-wrap {
+            padding: 16px 18px 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .categories-wrap::-webkit-scrollbar {
+            display: none;
+        }
+
+        .categories {
+            display: flex;
+            gap: 8px;
+            width: max-content;
+        }
+
+        .cat-btn {
+            padding: 9px 18px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .cat-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: #0D0D0D;
+            font-weight: 600;
+        }
+
+        .cat-btn:hover:not(.active) {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── FILTERS ── */
+        .filters-row {
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 3px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .view-btn {
+            width: 34px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .view-btn.active {
+            background: var(--gold);
+            color: #0D0D0D;
+        }
+
+        .sort-select {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .sort-select option {
+            background: var(--bg3);
+        }
+
+        .price-filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .price-btn {
+            padding: 6px 12px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            white-space: nowrap;
+        }
+
+        .price-btn.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .price-btn:hover:not(.active) {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── MENU GRID ── */
+        .menu-grid {
+            padding: 12px 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .menu-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        /* ── MENU CARD ── */
+        .menu-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: cardIn 0.4s ease both;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .menu-card.list-view {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .menu-card.list-view .card-img-wrap {
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .menu-card.list-view .card-img {
+            height: 120px;
+        }
+
+        .menu-card.list-view .card-body {
+            flex: 1;
+        }
+
+        .card-img-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.4s;
+            display: block;
+        }
+
+        .menu-card:hover .card-img {
+            transform: scale(1.05);
+        }
+
+        .card-badge-rating {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .star-icon {
+            color: #F5C518;
+            font-size: 10px;
+        }
+
+        .card-price-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold-light);
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .card-top {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .card-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 2px;
+            flex-shrink: 0;
+            color: var(--text-dim);
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .fav-btn.active {
+            color: var(--gold);
+        }
+
+        .fav-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .card-cat-pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 50px;
+            background: var(--gold-dim);
+            border: 1px solid var(--border);
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .card-price-inline {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-light);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .card-etb {
+            font-size: 10px;
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-left: 2px;
+        }
+
+        /* list view adjustments */
+        .menu-card.list-view .card-name {
+            font-size: 15px;
+        }
+
+        .menu-card.list-view .card-price-inline {
+            font-size: 18px;
+        }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: rgba(13, 13, 13, 0.97);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 10px 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 11px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            min-width: 70px;
+        }
+
+        .nav-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .nav-btn:hover {
+            color: var(--gold);
+        }
+
+        .nav-btn.active {
+            color: var(--gold);
+        }
+
+        .nav-center-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+        }
+
+        .nav-logo-ring {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            background: var(--bg2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 14px rgba(201, 168, 76, 0.3);
+            transition: all 0.2s;
+        }
+
+        .nav-logo-ring:hover {
+            box-shadow: 0 0 22px rgba(201, 168, 76, 0.5);
+            transform: scale(1.05);
+        }
+
+        .nav-logo-ring svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-logo-label {
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            top: 78px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: #1C4A30;
+            border: 1px solid #2D7D4F;
+            color: #5BCA8A;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── MODALS ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-sheet {
+            background: var(--bg2);
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 430px;
+            border-top: 1px solid var(--border);
+            transform: translateY(30px);
+            transition: transform 0.3s;
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        .modal-sheet::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .modal-overlay.show .modal-sheet {
+            transform: translateY(0);
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--surface);
+            border-radius: 2px;
+            margin: 12px auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 20px 16px;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--gold-dim);
+            color: var(--gold);
+        }
+
+        /* ── ABOUT MODAL ── */
+        .about-body {
+            padding: 0 20px 28px;
+        }
+
+        .about-logo-wrap {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .about-logo-circle {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            box-shadow: 0 0 24px rgba(201, 168, 76, 0.2);
+        }
+
+        .about-restaurant-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--gold-light);
+            font-weight: 700;
+        }
+
+        .about-tagline {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .about-stars-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .about-stars {
+            color: #F5C518;
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+
+        .about-rating-num {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .about-rating-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .about-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
+        }
+
+        .about-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .about-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+
+        .about-info-card {
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            margin-top: 16px;
+        }
+
+        .about-info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 13px;
+        }
+
+        .about-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-info-icon {
+            font-size: 18px;
+            width: 26px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .about-info-label {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-info-val {
+            font-size: 13px;
+            color: var(--text);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .about-note {
+            margin-top: 16px;
+            padding: 12px 14px;
+            background: rgba(201, 168, 76, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ── REVIEW MODAL ── */
+        .review-body {
+            padding: 8px 20px 28px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+            resize: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--gold);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 6px;
+        }
+
+        .star-rate-btn {
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.15s;
+            color: var(--text-dim);
+            background: none;
+            border: none;
+            padding: 2px;
+        }
+
+        .star-rate-btn.lit {
+            color: #F5C518;
+        }
+
+        .star-rate-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .btn-submit-review {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--gold), #8B6820);
+            color: #0D0D0D;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-submit-review:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* ── EMPTY / NO ITEMS ── */
+        .no-items {
+            grid-column: 1/-1;
+            padding: 36px 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 13px;
+        }
+
+        /* ── LANG ── */
+        [data-am] {
+            display: none;
+        }
+
+        body.lang-am [data-en] {
+            display: none;
+        }
+
+        body.lang-am [data-am] {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── TOAST ── -->
+    <div class="toast" id="toast">
+        <span>✓</span><span id="toast-msg"></span>
+    </div>
+
+    <!-- ══════════════════ SPLASH ══════════════════ -->
+    <div class="screen" id="splash">
+        <div class="splash-glow"></div>
+        <div class="splash-logo-ring">
+            <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 34 C15 24 20 18 30 18 C40 18 45 24 45 34" stroke="#C9A84C" stroke-width="2" fill="none"
+                    stroke-linecap="round" />
+                <path d="M10 34 H50" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M20 34 L22 46 H38 L40 34" fill="rgba(201,168,76,0.25)" stroke="#C9A84C" stroke-width="1.5"
+                    stroke-linejoin="round" />
+                <path d="M45 28 C49 28 52 30 52 33 C52 36 49 38 45 38" stroke="#C9A84C" stroke-width="1.5" fill="none"
+                    stroke-linecap="round" />
+                <circle cx="30" cy="14" r="2.5" fill="#C9A84C" opacity="0.6" />
+                <path d="M27 13 Q30 10 33 13" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div class="splash-title">Arda</div>
+        <div class="splash-sub">Coffee &amp; Pastry</div>
+        <div class="splash-tagline">"Opening Menu — Adama, Ethiopia"</div>
+        <div class="splash-rating">
+            <span class="splash-stars">★★★★★</span>
+            <span class="splash-rating-txt">4.8 · Cafe</span>
+        </div>
+        <div class="splash-divider">
+            <div class="splash-divider-line"></div>
+            <div class="splash-divider-dot"></div>
+            <div class="splash-divider-line"></div>
+        </div>
+        <button class="btn-splash" onclick="goToMenu()">
+            <span data-en>Explore Menu</span><span data-am>ምናሌ ይመልከቱ</span>
+        </button>
+        <div class="splash-about-link" onclick="openModal('about-modal')">
+            <span data-en>About Us →</span><span data-am>ስለ እኛ →</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════ MENU SCREEN ══════════════════ -->
+    <div class="screen hidden" id="menu-screen">
+        <div class="app-header">
+            <div class="header-brand" onclick="goToSplash()">
+                <div class="header-logo">
+                    <svg viewBox="0 0 60 60" fill="none" width="22" height="22">
+                        <path d="M15 34 C15 24 20 18 30 18 C40 18 45 24 45 34" stroke="#C9A84C" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" />
+                        <path d="M10 34 H50" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" />
+                        <path d="M20 34 L22 46 H38 L40 34" fill="rgba(201,168,76,0.3)" stroke="#C9A84C" stroke-width="2"
+                            stroke-linejoin="round" />
+                        <path d="M45 28 C49 28 52 30 52 33 C52 36 49 38 45 38" stroke="#C9A84C" stroke-width="2"
+                            fill="none" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="header-name">Arda</div>
+                    <div class="header-sub-name">Coffee &amp; Pastry · Adama</div>
+                </div>
+            </div>
+            <button class="lang-btn" onclick="toggleLang()">
+                <span>🌐</span>
+                <span id="lang-label">EN</span>
+            </button>
+        </div>
+
+        <div class="menu-scroll">
+            <!-- Categories -->
+            <div class="categories-wrap">
+                <div class="categories">
+                    <button class="cat-btn active" data-cat="all" onclick="filterCat(this,'all')"><span
+                            data-en>All</span><span data-am>ሁሉም</span></button>
+                    <button class="cat-btn" data-cat="hot" onclick="filterCat(this,'hot')"><span data-en>Hot
+                            Drinks</span><span data-am>ሞቃት መጠጦች</span></button>
+                    <button class="cat-btn" data-cat="cold" onclick="filterCat(this,'cold')"><span data-en>Cold
+                            Drinks</span><span data-am>ቀዝቃዛ መጠጦች</span></button>
+                    <button class="cat-btn" data-cat="shakes" onclick="filterCat(this,'shakes')"><span data-en>Shakes
+                            &amp; Frappes</span><span data-am>ሽኬ እና ፍራፔ</span></button>
+                    <button class="cat-btn" data-cat="juice" onclick="filterCat(this,'juice')"><span
+                            data-en>Juice</span><span data-am>ጁስ</span></button>
+                    <button class="cat-btn" data-cat="mojito" onclick="filterCat(this,'mojito')"><span
+                            data-en>Mojito</span><span data-am>ሞሂቶ</span></button>
+                    <button class="cat-btn" data-cat="dessert" onclick="filterCat(this,'dessert')"><span
+                            data-en>Desserts</span><span data-am>ጣፋጭ ምግቦች</span></button>
+                    <button class="cat-btn" data-cat="bottled" onclick="filterCat(this,'bottled')"><span
+                            data-en>Bottled</span><span data-am>ጠርሙስ መጠጦች</span></button>
+                </div>
+            </div>
+
+            <!-- Filters row -->
+            <div class="filters-row">
+                <div class="view-toggle">
+                    <button class="view-btn active" id="grid-btn" onclick="setView('grid')" title="Grid">
+                        <svg viewBox="0 0 18 18" fill="currentColor">
+                            <rect x="1" y="1" width="6" height="6" rx="1.5" />
+                            <rect x="11" y="1" width="6" height="6" rx="1.5" />
+                            <rect x="1" y="11" width="6" height="6" rx="1.5" />
+                            <rect x="11" y="11" width="6" height="6" rx="1.5" />
+                        </svg>
+                    </button>
+                    <button class="view-btn" id="list-btn" onclick="setView('list')" title="List">
+                        <svg viewBox="0 0 18 18" fill="currentColor">
+                            <rect x="1" y="2" width="16" height="2.5" rx="1.25" />
+                            <rect x="1" y="7.75" width="16" height="2.5" rx="1.25" />
+                            <rect x="1" y="13.5" width="16" height="2.5" rx="1.25" />
+                        </svg>
+                    </button>
+                </div>
+                <select class="sort-select" id="sort-select" onchange="applySort()">
+                    <option value="">Sort By</option>
+                    <option value="price-asc">Price: Low → High</option>
+                    <option value="price-desc">Price: High → Low</option>
+                    <option value="rating">Top Rated</option>
+                    <option value="name">A → Z</option>
+                </select>
+                <div class="price-filters">
+                    <button class="price-btn active" data-price="all" onclick="filterPrice(this,'all')">All</button>
+                    <button class="price-btn" data-price="low" onclick="filterPrice(this,'low')">&lt;100</button>
+                    <button class="price-btn" data-price="mid" onclick="filterPrice(this,'mid')">100–250</button>
+                    <button class="price-btn" data-price="high" onclick="filterPrice(this,'high')">250+</button>
+                </div>
+            </div>
+
+            <!-- Menu grid -->
+            <div class="menu-grid" id="menu-grid"></div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+            <button class="nav-btn" onclick="openModal('about-modal')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    <polyline points="9,22 9,12 15,12 15,22" />
+                </svg>
+                <span data-en>About Us</span><span data-am>ስለ እኛ</span>
+            </button>
+
+            <div class="nav-center-logo" onclick="goToSplash()">
+                <div class="nav-logo-ring">
+                    <svg viewBox="0 0 60 60" fill="none" width="24" height="24">
+                        <path d="M15 34 C15 24 20 18 30 18 C40 18 45 24 45 34" stroke="#C9A84C" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" />
+                        <path d="M10 34 H50" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" />
+                        <path d="M20 34 L22 46 H38 L40 34" fill="rgba(201,168,76,0.3)" stroke="#C9A84C" stroke-width="2"
+                            stroke-linejoin="round" />
+                        <path d="M45 28 C49 28 52 30 52 33 C52 36 49 38 45 38" stroke="#C9A84C" stroke-width="2"
+                            fill="none" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <span class="nav-logo-label">Arda</span>
+            </div>
+
+            <button class="nav-btn" onclick="openModal('review-modal')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg>
+                <span data-en>Review</span><span data-am>ግምገማ</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══════════════════ ABOUT MODAL ══════════════════ -->
+    <div class="modal-overlay" id="about-modal">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <span class="modal-title"><span data-en>About Us</span><span data-am>ስለ እኛ</span></span>
+                <button class="modal-close" onclick="closeModal('about-modal')">✕</button>
+            </div>
+            <div class="about-body">
+                <div class="about-logo-wrap">
+                    <div class="about-logo-circle">
+                        <svg viewBox="0 0 60 60" fill="none" width="50" height="50">
+                            <path d="M15 34 C15 24 20 18 30 18 C40 18 45 24 45 34" stroke="#C9A84C" stroke-width="2.5"
+                                fill="none" stroke-linecap="round" />
+                            <path d="M10 34 H50" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" />
+                            <path d="M20 34 L22 46 H38 L40 34" fill="rgba(201,168,76,0.3)" stroke="#C9A84C"
+                                stroke-width="2" stroke-linejoin="round" />
+                            <path d="M45 28 C49 28 52 30 52 33 C52 36 49 38 45 38" stroke="#C9A84C" stroke-width="2"
+                                fill="none" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="about-restaurant-name">Arda Coffee &amp; Pastry</div>
+                    <div class="about-tagline">Opening Menu · Cafe · Adama</div>
+                    <div class="about-stars-row">
+                        <span class="about-stars">★★★★★</span>
+                        <span class="about-rating-num">4.8</span>
+                        <span class="about-rating-count">(5 reviews)</span>
+                    </div>
+                </div>
+
+                <div class="about-divider"></div>
+
+                <div class="about-section-title" data-en>Our Story</div>
+                <div class="about-section-title" data-am style="display:none">ታሪካችን</div>
+                <p class="about-text" data-en>
+                    Welcome to Arda Coffee & Pastry 
+                A haven of refined flavors in the heart of Adama. We craft every
+                    cup with love, sourcing the finest Ethiopian beans and pairing them with artisan pastries made fresh
+                    daily.
+                </p>
+                <p class="about-text" data-am style="display:none">
+                    እንኳን ወደ አርዳ ቡና እና ፓስትሪ ደህና መጡ — በአዳማ ልብ ውስጥ የሚገኝ የጣፋጭ ጣዕሞች መናኸሪያ። እያንዳንዱን ኩባያ ከፍቅር ጋር እናዘጋጃለን።
+                </p>
+
+                <div class="about-info-card">
+                    <div class="about-info-row">
+                        <span class="about-info-icon">📍</span>
+                        <div>
+                            <div class="about-info-label">Address</div>
+                            <div class="about-info-val">G7VF+XP9 — Adama, Oromia</div>
+                        </div>
+                    </div>
+                    <div class="about-info-row">
+                        <span class="about-info-icon">📞</span>
+                        <div>
+                            <div class="about-info-label">Phone</div>
+                            <div class="about-info-val">093 893 8408</div>
+                        </div>
+                    </div>
+                    <div class="about-info-row">
+                        <span class="about-info-icon">⭐</span>
+                        <div>
+                            <div class="about-info-label">Rating</div>
+                            <div class="about-info-val">4.8 out of 5 · Highly Rated Cafe</div>
+                        </div>
+                    </div>
+                    <div class="about-info-row">
+                        <span class="about-info-icon">🏷️</span>
+                        <div>
+                            <div class="about-info-label">VAT & Service</div>
+                            <div class="about-info-val">VAT 15% + 5% surcharge included</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-note" data-en>
+                    ⓕ Items marked (F) are also available in a <strong>Fasting Option</strong>.<br>
+                    If you have any allergy or special dietary requirement, please inform a member of our team. Thank
+                    you!
+                </div>
+                <div class="about-note" data-am style="display:none">
+                    ⓕ (F) ምልክት ያላቸው ምግቦች በፆም አማራጭም ይገኛሉ።<br>
+                    አለርጂ ወይም ልዩ የአመጋገብ ፍላጎት ካለዎ፣ ለቡድናችን አባል ያሳውቁ። እናመሰግናለን!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════ REVIEW MODAL ══════════════════ -->
+    <div class="modal-overlay" id="review-modal">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <span class="modal-title"><span data-en>Write a Review</span><span data-am>ግምገማ ጻፍ</span></span>
+                <button class="modal-close" onclick="closeModal('review-modal')">✕</button>
+            </div>
+            <div class="review-body">
+                <div class="form-group">
+                    <label class="form-label" data-en>Your Name (Optional)</label>
+                    <label class="form-label" data-am style="display:none">ስምዎ (አማራጭ)</label>
+                    <input type="text" class="form-input" id="review-name" placeholder="Anonymous">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-en>Rating</label>
+                    <label class="form-label" data-am style="display:none">ደረጃ</label>
+                    <div class="star-rating" id="star-rating">
+                        <button class="star-rate-btn" onclick="setRating(1)">★</button>
+                        <button class="star-rate-btn" onclick="setRating(2)">★</button>
+                        <button class="star-rate-btn" onclick="setRating(3)">★</button>
+                        <button class="star-rate-btn" onclick="setRating(4)">★</button>
+                        <button class="star-rate-btn" onclick="setRating(5)">★</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-en>Comment</label>
+                    <label class="form-label" data-am style="display:none">አስተያየት</label>
+                    <textarea class="form-input" id="review-comment" rows="4"
+                        placeholder="Share your experience at Arda..."></textarea>
+                </div>
+                <button class="btn-submit-review" onclick="submitReview()">
+                    <span data-en>Submit Review</span><span data-am>ግምገማ ላክ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── MENU DATA (from Arda Opening Menu photo) ──
+        const menuData = [
+            // HOT DRINKS
+            { id: 1, name: "Espresso", nameAm: "ኤስፕሬሶ", price: 80, cat: "hot", rating: 4.9, img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop" },
+            { id: 2, name: "Macchiato", nameAm: "ማቺያቶ", price: 100, cat: "hot", rating: 4.9, img: "https://images.unsplash.com/photo-1485808191679-5f86510bd9d4?w=400&h=300&fit=crop" },
+            { id: 3, name: "Cappuccino", nameAm: "ካፑቺኖ", price: 200, cat: "hot", rating: 4.6, img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&h=300&fit=crop" },
+            { id: 4, name: "Hot Chocolate", nameAm: "ሞቃት ቸኮሌት", price: 200, cat: "hot", rating: 4.5, img: "https://images.unsplash.com/photo-1572286258217-f679c6b06082?w=400&h=300&fit=crop" },
+            { id: 5, name: "Mocha", nameAm: "ሞካ", price: 240, cat: "hot", rating: 4.7, img: "https://images.unsplash.com/photo-1579888944880-d98341245702?w=400&h=300&fit=crop" },
+            { id: 6, name: "Matcha Latte", nameAm: "ማቻ ላቴ", price: 270, cat: "hot", rating: 4.4, img: "https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?w=400&h=300&fit=crop" },
+            { id: 7, name: "Milk", nameAm: "ወተት", price: 95, cat: "hot", rating: 4.2, img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop" },
+            { id: 8, name: "Tea", nameAm: "ሻይ", price: 50, cat: "hot", rating: 4.0, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop" },
+            { id: 9, name: "Hibiscus Tea", nameAm: "ሂቢስከስ ሻይ", price: 60, cat: "hot", rating: 4.3, img: "https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=400&h=300&fit=crop" },
+            { id: 10, name: "Special Tea (Small)", nameAm: "ልዩ ሻይ (ትንሽ)", price: 110, cat: "hot", rating: 4.5, img: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=300&fit=crop" },
+            { id: 11, name: "Special Tea (Large)", nameAm: "ልዩ ሻይ (ትልቅ)", price: 130, cat: "hot", rating: 4.5, img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&h=300&fit=crop" },
+
+            // COLD DRINKS
+            { id: 12, name: "Iced Latte", nameAm: "አይስ ላቴ", price: 230, cat: "cold", rating: 4.7, img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop" },
+            { id: 13, name: "Caramel Iced Latte", nameAm: "ካራሜል አይስ ላቴ", price: 260, cat: "cold", rating: 4.8, img: "https://images.unsplash.com/photo-1568909344668-6f14a07b56a0?w=400&h=300&fit=crop" },
+            { id: 14, name: "Iced Chocolate Latte", nameAm: "አይስ ቸኮሌት ላቴ", price: 260, cat: "cold", rating: 4.6, img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop" },
+            { id: 15, name: "Iced Mocha", nameAm: "አይስ ሞካ", price: 260, cat: "cold", rating: 4.7, img: "https://images.unsplash.com/photo-1538587888044-79f13ddd7e49?w=400&h=300&fit=crop" },
+            { id: 16, name: "Iced Strawberry Latte", nameAm: "አይስ ስትሮቤሪ ላቴ", price: 270, cat: "cold", rating: 4.8, img: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop" },
+            { id: 17, name: "Iced Matcha Latte", nameAm: "አይስ ማቻ ላቴ", price: 330, cat: "cold", rating: 4.6, img: "https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?w=400&h=300&fit=crop" },
+            { id: 18, name: "Shaken Hibiscus", nameAm: "ሺከን ሂቢስከስ", price: 170, cat: "cold", rating: 4.5, img: "https://tse3.mm.bing.net/th/id/OIP.Dlk-TGaiFUjVCT1-6fad-wHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" },
+
+            // SHAKES & FRAPPES
+            { id: 19, name: "Mocha Frappe", nameAm: "ሞካ ፍራፔ", price: 280, cat: "shakes", rating: 4.7, img: "https://images.unsplash.com/photo-1572490122747-3e4b0f68f41d?w=400&h=300&fit=crop" },
+            { id: 20, name: "Caramel Frappe", nameAm: "ካራሜል ፍራፔ", price: 270, cat: "shakes", rating: 4.8, img: "https://images.unsplash.com/photo-1621236378699-8597faf6a176?w=400&h=300&fit=crop" },
+            { id: 21, name: "Tiramisu Frappe", nameAm: "ቲራሚሱ ፍራፔ", price: 270, cat: "shakes", rating: 4.7, img: "https://images.unsplash.com/photo-1594661745561-7aee1e2c78c7?w=400&h=300&fit=crop" },
+            { id: 22, name: "Chocolate Frappe", nameAm: "ቸኮሌት ፍራፔ", price: 270, cat: "shakes", rating: 4.6, img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&h=300&fit=crop" },
+            { id: 23, name: "Oreo Milkshake", nameAm: "ኦሪዮ ሚልክሽኬ", price: 350, cat: "shakes", rating: 4.9, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop&grayscale" },
+            { id: 24, name: "Strawberry Milkshake", nameAm: "ስትሮቤሪ ሚልክሽኬ", price: 340, cat: "shakes", rating: 4.8, img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop" },
+            { id: 25, name: "Vanilla Frappe", nameAm: "ቫኒላ ፍራፔ", price: 270, cat: "shakes", rating: 4.6, img: "https://images.unsplash.com/photo-1541658016709-82835ce21333?w=400&h=300&fit=crop" },
+
+            // JUICE
+            { id: 26, name: "Strawberry Juice", nameAm: "ስትሮቤሪ ጁስ", price: 260, cat: "juice", rating: 4.7, img: "https://images.unsplash.com/photo-1497534446932-c925b458314e?w=400&h=300&fit=crop" },
+            { id: 27, name: "Pineapple Juice", nameAm: "አናናስ ጁስ", price: 250, cat: "juice", rating: 4.5, img: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&h=300&fit=crop" },
+            { id: 28, name: "Orange Juice", nameAm: "ብርቱካን ጁስ", price: 330, cat: "juice", rating: 4.6, img: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop" },
+            { id: 29, name: "Mango Juice", nameAm: "ማንጎ ጁስ", price: 320, cat: "juice", rating: 4.8, img: "https://images.unsplash.com/photo-1534353473418-4cfa0c05dfdb?w=400&h=300&fit=crop" },
+            { id: 30, name: "Fruit Bowl", nameAm: "ፍራፍሬ ቅርጫት", price: 490, cat: "juice", rating: 4.9, img: "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&h=300&fit=crop" },
+
+            // MOJITO
+            { id: 31, name: "Hibiscus Mojito", nameAm: "ሂቢስከስ ሞሂቶ", price: 210, cat: "mojito", rating: 4.5, img: "https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=400&h=300&fit=crop" },
+            { id: 32, name: "Cold Brew Mojito", nameAm: "ቀዝቃዛ ቡና ሞሂቶ", price: 210, cat: "mojito", rating: 4.6, img: "https://images.unsplash.com/photo-1470338745628-171cf53de3a4?w=400&h=300&fit=crop" },
+            { id: 33, name: "Strawberry Mojito", nameAm: "ስትሮቤሪ ሞሂቶ", price: 270, cat: "mojito", rating: 4.7, img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&h=300&fit=crop" },
+            { id: 34, name: "Pineapple Mojito", nameAm: "አናናስ ሞሂቶ", price: 260, cat: "mojito", rating: 4.5, img: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=300&fit=crop" },
+            { id: 35, name: "Orange Mojito", nameAm: "ብርቱካን ሞሂቶ", price: 310, cat: "mojito", rating: 4.6, img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&h=300&fit=crop" },
+            { id: 36, name: "Arda Special Mojito", nameAm: "አርዳ ልዩ ሞሂቶ", price: 330, cat: "mojito", rating: 4.9, img: "https://images.unsplash.com/photo-1541614101331-1a5a3a194e92?w=400&h=300&fit=crop" },
+
+            // DESSERTS
+            { id: 37, name: "Spaghetti Crepes", nameAm: "ስፓጌቲ ክሬፕ", price: 510, cat: "dessert", rating: 4.6, img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&h=300&fit=crop" },
+            { id: 38, name: "Triple Chocolate Crepes", nameAm: "ሦስት ቸኮሌት ክሬፕ", price: 560, cat: "dessert", rating: 4.8, img: "https://tse4.mm.bing.net/th/id/OIP.jIjrGBdM5N2hsSiFoDJBVgHaJ3?rs=1&pid=ImgDetMain&o=7&rm=3" },
+            { id: 39, name: "Tiramisu", nameAm: "ቲራሚሱ", price: 265, cat: "dessert", rating: 4.9, img: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop" },
+            { id: 40, name: "Chocolate Cake", nameAm: "ቸኮሌት ኬክ", price: 220, cat: "dessert", rating: 4.7, img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop" },
+            { id: 41, name: "Caramel Cake", nameAm: "ካራሜል ኬክ", price: 220, cat: "dessert", rating: 4.6, img: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=400&h=300&fit=crop" },
+            { id: 42, name: "Boxegna", nameAm: "ቦጠኛ", price: 180, cat: "dessert", rating: 4.4, img: "https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=400&h=300&fit=crop" },
+            { id: 43, name: "White Forest Gateau (F)", nameAm: "ዋይት ፎረስት ኬክ (ፆም)", price: 230, cat: "dessert", rating: 4.5, img: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop" },
+
+            // BOTTLED DRINKS
+            { id: 44, name: "Soft Drink", nameAm: "ሶፍት ድሪንክ", price: 70, cat: "bottled", rating: 4.0, img: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&h=300&fit=crop" },
+            { id: 45, name: "Water 0.5L", nameAm: "ውሃ 0.5 ሊትር", price: 50, cat: "bottled", rating: 4.0, img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&h=300&fit=crop" },
+            { id: 46, name: "Water 1L", nameAm: "ውሃ 1 ሊትር", price: 60, cat: "bottled", rating: 4.0, img: "https://images.unsplash.com/photo-1559839914-17aae19cec71?w=400&h=300&fit=crop" },
+        ];
+
+        // ── STATE ──
+        let favorites = new Set();
+        let currentCat = 'all';
+        let currentPrice = 'all';
+        let currentView = 'grid';
+        let currentSort = '';
+        let reviewRating = 0;
+        let lang = 'en';
+
+        const catLabels = {
+            hot: 'Hot Drinks', cold: 'Cold Drinks', shakes: 'Shakes & Frappes',
+            juice: 'Juice', mojito: 'Mojito', dessert: 'Desserts', bottled: 'Bottled'
+        };
+
+        // ── RENDER ──
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            let items = [...menuData];
+
+            if (currentCat !== 'all') items = items.filter(i => i.cat === currentCat);
+            if (currentPrice === 'low') items = items.filter(i => i.price < 100);
+            else if (currentPrice === 'mid') items = items.filter(i => i.price >= 100 && i.price <= 250);
+            else if (currentPrice === 'high') items = items.filter(i => i.price > 250);
+
+            if (currentSort === 'price-asc') items.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-desc') items.sort((a, b) => b.price - a.price);
+            else if (currentSort === 'rating') items.sort((a, b) => b.rating - a.rating);
+            else if (currentSort === 'name') items.sort((a, b) => a.name.localeCompare(b.name));
+
+            if (items.length === 0) {
+                grid.innerHTML = `<div class="no-items">✦ No items found for this filter</div>`;
+                return;
+            }
+
+            grid.innerHTML = items.map((item, idx) => {
+                const isFav = favorites.has(item.id);
+                const isList = currentView === 'list';
+                const stars = renderStars(item.rating);
+                const label = catLabels[item.cat] || item.cat;
+                return `
+    <div class="menu-card ${isList ? 'list-view' : ''}" style="animation-delay:${idx * 0.04}s">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${item.img}" alt="${lang === 'am' ? item.nameAm : item.name}" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop'">
+        <div class="card-badge-rating">${stars}<span>${item.rating}</span></div>
+        <div class="card-price-badge">ETB ${item.price}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="card-name">${lang === 'am' ? item.nameAm : item.name}</div>
+          <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav(${item.id},this)" title="Favourite">★</button>
+        </div>
+        <span class="card-cat-pill">${label}</span>
+        <div style="margin-top:4px">
+          <span class="card-price-inline">${item.price}</span>
+          <span class="card-etb">ETB</span>
+        </div>
+      </div>
+    </div>`;
+            }).join('');
+        }
+
+        function renderStars(r) {
+            let s = '';
+            for (let i = 1; i <= 5; i++) {
+                const op = i <= Math.floor(r) ? '1' : (i === Math.ceil(r) && r % 1 >= 0.5) ? '0.5' : '0.2';
+                s += `<span class="star-icon" style="opacity:${op}">★</span>`;
+            }
+            return s;
+        }
+
+        // ── FAVOURITES ──
+        function toggleFav(id, btn) {
+            if (favorites.has(id)) { favorites.delete(id); btn.classList.remove('active'); }
+            else { favorites.add(id); btn.classList.add('active'); }
+            showToast(favorites.has(id)
+                ? (lang === 'am' ? 'ወደ ተወዳጆች ተጨምሯል ★' : 'Added to favourites ★')
+                : (lang === 'am' ? 'ከተወዳጆች ተወግዷል' : 'Removed from favourites'));
+        }
+
+        // ── FILTERS ──
+        function filterCat(el, cat) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            currentCat = cat; renderMenu();
+        }
+        function filterPrice(el, price) {
+            document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            currentPrice = price; renderMenu();
+        }
+        function setView(v) {
+            currentView = v;
+            document.getElementById('grid-btn').classList.toggle('active', v === 'grid');
+            document.getElementById('list-btn').classList.toggle('active', v === 'list');
+            document.getElementById('menu-grid').className = 'menu-grid' + (v === 'list' ? ' list-view' : '');
+            renderMenu();
+        }
+        function applySort() {
+            currentSort = document.getElementById('sort-select').value;
+            renderMenu();
+        }
+
+        // ── LANGUAGE ──
+        function toggleLang() {
+            lang = lang === 'en' ? 'am' : 'en';
+            document.body.classList.toggle('lang-am', lang === 'am');
+            document.getElementById('lang-label').textContent = lang === 'en' ? 'EN' : 'አማ';
+            syncLangElements();
+            renderMenu();
+        }
+        function syncLangElements() {
+            document.querySelectorAll('[data-am]').forEach(el => {
+                el.style.display = lang === 'am' ? (el.tagName === 'DIV' || el.tagName === 'P' ? 'block' : 'inline') : 'none';
+            });
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.style.display = lang === 'en' ? (el.tagName === 'DIV' || el.tagName === 'P' ? 'block' : 'inline') : 'none';
+            });
+        }
+
+        // ── REVIEW ──
+        function setRating(n) {
+            reviewRating = n;
+            document.querySelectorAll('.star-rate-btn').forEach((b, i) => b.classList.toggle('lit', i < n));
+        }
+        function submitReview() {
+            if (!reviewRating) { showToast(lang === 'am' ? 'እባክዎ ደረጃ ይምረጡ' : 'Please select a rating'); return; }
+            closeModal('review-modal');
+            showToast(lang === 'am' ? 'ግምገማዎ ተቀብሏል! 🙏' : 'Review submitted! Thank you 🙏');
+            document.getElementById('review-name').value = '';
+            document.getElementById('review-comment').value = '';
+            setRating(0);
+        }
+
+        // ── MODALS ──
+        function openModal(id) { document.getElementById(id).classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+        document.querySelectorAll('.modal-overlay').forEach(o => {
+            o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show'); });
+        });
+
+        // ── TOAST ──
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+        }
+
+        // ── NAVIGATION ──
+        function goToMenu() {
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('hidden');
+            renderMenu();
+        }
+        function goToSplash() {
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('splash').classList.remove('hidden');
+        }
+
+        // ── INIT ──
+        syncLangElements();
+    </script>
+</body>
+
+</html>
