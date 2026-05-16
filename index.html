@@ -22,15 +22,15 @@
             --text-muted: #6B5A46;
             --text-dim: #9B8B78;
             --radius: 16px;
-            --shadow: 0 8px 24px rgba(91, 76, 58, 0.12);
             --btn-text: #F4EFE6;
             --gold-accent: #C9A84C;
-            /* Simplified glass — no heavy blur */
             --glass-bg: rgba(255,255,255,0.55);
             --header-bg: rgba(244,239,230,0.96);
             --nav-bg: rgba(244,239,230,0.97);
             --modal-bg: #EDE5D8;
             --splash-bg: radial-gradient(ellipse at 50% 30%, #DED1BA 0%, #F4EFE6 70%);
+            /* Nav height + safe area — used in both nav and scroll padding */
+            --nav-height: 64px;
         }
 
         /* ── DARK THEME ── */
@@ -47,7 +47,6 @@
             --text: #F0EAD6;
             --text-muted: #9B9380;
             --text-dim: #5A5347;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             --btn-text: #FFF8EE;
             --gold-accent: #C9A84C;
             --glass-bg: rgba(26,26,26,0.7);
@@ -58,7 +57,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; overflow: hidden; }
+        html { height: 100%; }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -67,9 +66,10 @@
             max-width: 430px;
             margin: 0 auto;
             position: relative;
+            /* Let body scroll naturally so nav is never clipped */
+            height: 100%;
+            min-height: 100vh;
             overflow: hidden;
-            height: 100vh;
-            /* Body-level theme transition only — NOT on every element */
             transition: background-color 0.4s ease, color 0.3s ease;
         }
 
@@ -77,7 +77,6 @@
         .screen {
             position: absolute;
             inset: 0;
-            /* GPU-composited only (opacity + transform) */
             transition: opacity 0.35s ease, transform 0.35s ease;
             will-change: opacity, transform;
         }
@@ -94,16 +93,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
-        /* Simplified glow — CSS only, no JS animation layer */
         .splash-glow {
             position: absolute;
             top: 18%;
             width: 280px; height: 280px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(138,115,86,0.12) 0%, transparent 70%);
-            /* Use transform: scale for GPU acceleration */
             animation: pulse 4s ease-in-out infinite;
             will-change: transform;
             pointer-events: none;
@@ -126,11 +124,8 @@
             margin-bottom: 26px;
             animation: fadeUp 0.6s ease both;
             position: relative;
-            /* Removed conic-gradient spinner — too heavy on low-end */
         }
-        body.dark-theme .splash-logo-ring {
-            box-shadow: 0 0 28px rgba(201,168,76,0.22);
-        }
+        body.dark-theme .splash-logo-ring { box-shadow: 0 0 28px rgba(201,168,76,0.22); }
         .splash-logo-ring svg { width: 58px; height: 58px; }
 
         .splash-title {
@@ -168,10 +163,7 @@
             animation: fadeUp 0.6s 0.26s ease both;
         }
         .splash-divider-line { flex: 1; height: 1px; background: var(--border); }
-        .splash-divider-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: var(--gold);
-        }
+        .splash-divider-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
 
         .btn-splash {
             margin-top: 34px;
@@ -185,13 +177,11 @@
             text-transform: uppercase;
             box-shadow: 0 4px 20px rgba(138,115,86,0.3);
             animation: fadeUp 0.6s 0.32s ease both;
-            /* Only transition what we need */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             font-family: 'DM Sans', sans-serif;
         }
         body.dark-theme .btn-splash { box-shadow: 0 4px 20px rgba(201,168,76,0.3); }
         .btn-splash:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(138,115,86,0.38); }
-        body.dark-theme .btn-splash:hover { box-shadow: 0 8px 28px rgba(201,168,76,0.38); }
         .btn-splash:active { transform: scale(0.97); }
 
         .splash-about-link {
@@ -208,16 +198,26 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* ── MENU SCREEN — flex column filling the fixed viewport ── */
+        #menu-screen {
+            display: flex;
+            flex-direction: column;
+            /* Fill exactly the viewport height */
+            height: 100%;
+            overflow: hidden;
+        }
+
         /* ── HEADER ── */
         .app-header {
-            position: sticky; top: 0; z-index: 50;
+            position: relative;
+            z-index: 50;
             background: var(--header-bg);
             border-bottom: 1px solid var(--border);
             padding: 14px 18px;
             display: flex; align-items: center; justify-content: space-between;
+            /* Fixed height so flex math is reliable */
             flex-shrink: 0;
             box-shadow: 0 2px 12px rgba(91,76,58,0.06);
-            /* Theme transition on header */
             transition: background-color 0.4s ease, border-color 0.4s ease;
         }
 
@@ -236,7 +236,6 @@
         .header-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--gold-light); letter-spacing: 1px; }
         .header-sub-name { font-size: 9px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* ── HEADER CONTROLS ── */
         .header-controls { display: flex; align-items: center; gap: 8px; }
 
         /* ── THEME TOGGLE ── */
@@ -250,7 +249,6 @@
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         .theme-toggle-wrap:hover { border-color: var(--gold); }
-
         .theme-icon { font-size: 12px; line-height: 1; }
 
         .toggle-switch {
@@ -270,14 +268,11 @@
             width: 11px; height: 11px;
             border-radius: 50%;
             background: var(--gold);
-            /* GPU composited transition */
             transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
             will-change: transform;
             box-shadow: 0 1px 4px rgba(0,0,0,0.25);
         }
-        body.dark-theme .toggle-knob {
-            transform: translateX(13px);
-        }
+        body.dark-theme .toggle-knob { transform: translateX(13px); }
 
         /* Lang button */
         .lang-btn {
@@ -304,7 +299,6 @@
             z-index: 200; min-width: 140px;
             opacity: 0; pointer-events: none;
             transform: translateY(-6px);
-            /* GPU composited */
             transition: opacity 0.2s ease, transform 0.2s ease;
             will-change: opacity, transform;
         }
@@ -324,14 +318,14 @@
         .lang-option.active { color: var(--gold); font-weight: 600; }
         .lang-check { margin-left: auto; font-size: 10px; color: var(--gold); }
 
-        /* ── MENU SCREEN ── */
-        #menu-screen { display: flex; flex-direction: column; overflow: hidden; }
-
+        /* ── SCROLL AREA — grows to fill space between header and nav ── */
         .menu-scroll {
-            flex: 1; overflow-y: auto;
-            padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
-            /* Smooth scroll on iOS */
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
+            /* Extra bottom padding = nav height + safe area, so last card clears the nav */
+            padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 16px) + 16px);
         }
         .menu-scroll::-webkit-scrollbar { width: 3px; }
         .menu-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -353,7 +347,7 @@
             background: var(--bg2);
             color: var(--text-muted); font-size: 13px; font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
             white-space: nowrap;
             font-family: 'DM Sans', sans-serif;
         }
@@ -425,12 +419,10 @@
             border-radius: var(--radius);
             border: 1px solid var(--border);
             overflow: hidden;
-            /* Only transform + shadow — GPU composited */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             animation: cardIn 0.4s ease both;
             cursor: pointer;
             box-shadow: 0 2px 10px rgba(91,76,58,0.06);
-            /* Promote to own layer to avoid repaint */
             will-change: transform;
         }
         body.dark-theme .menu-card {
@@ -441,13 +433,8 @@
             from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-        .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 28px rgba(91,76,58,0.14);
-        }
-        body.dark-theme .menu-card:hover {
-            box-shadow: 0 10px 28px rgba(0,0,0,0.4);
-        }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(91,76,58,0.14); }
+        body.dark-theme .menu-card:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.4); }
 
         .menu-card.list-view { display: flex; flex-direction: row; }
         .menu-card.list-view .card-img-wrap { width: 120px; flex-shrink: 0; }
@@ -456,9 +443,7 @@
 
         .card-img-wrap { position: relative; overflow: hidden; }
         .card-img {
-            width: 100%; height: 150px; object-fit: cover;
-            display: block;
-            /* GPU composited zoom */
+            width: 100%; height: 150px; object-fit: cover; display: block;
             transition: transform 0.4s ease;
             will-change: transform;
         }
@@ -488,7 +473,6 @@
             background: none; border: none; cursor: pointer;
             padding: 2px; flex-shrink: 0; color: var(--text-dim);
             font-size: 16px;
-            /* Only transform — GPU composited */
             transition: transform 0.2s ease, color 0.15s ease;
         }
         .fav-btn.active { color: var(--gold); }
@@ -505,14 +489,22 @@
         .menu-card.list-view .card-name { font-size: 15px; }
         .menu-card.list-view .card-price-inline { font-size: 18px; }
 
-        /* ── BOTTOM NAV ── */
+        /* ── BOTTOM NAV ──
+           Key fixes:
+           1. position: relative inside the flex column (not fixed/absolute)
+              so it's always the last element and never clipped
+           2. Explicit min-height so it doesn't collapse
+           3. padding-bottom covers the iOS home bar via safe-area-inset-bottom
+        ── */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 430px;
+            position: relative;          /* ← was fixed; now part of normal flow */
+            width: 100%;
             background: var(--nav-bg);
             border-top: 1px solid var(--border);
-            padding: 10px 16px calc(20px + env(safe-area-inset-bottom, 0px));
-            display: flex; align-items: center; justify-content: space-between;
+            /* Vertical padding: 12px top, then 12px + safe-area on bottom */
+            padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+            display: flex; align-items: center; justify-content: space-around;
+            flex-shrink: 0;              /* ← never squish */
             z-index: 100;
             box-shadow: 0 -2px 16px rgba(91,76,58,0.06);
             transition: background-color 0.4s ease, border-color 0.4s ease;
@@ -525,9 +517,12 @@
             cursor: pointer;
             transition: color 0.2s ease, transform 0.2s ease;
             font-size: 10px; font-weight: 500;
-            font-family: 'DM Sans', sans-serif; min-width: 60px;
+            font-family: 'DM Sans', sans-serif;
+            /* Give each button a comfortable tap target */
+            min-width: 56px;
+            padding: 4px 0;
         }
-        .nav-btn svg { width: 20px; height: 20px; }
+        .nav-btn svg { width: 22px; height: 22px; }
         .nav-btn:hover { color: var(--gold); transform: translateY(-2px); }
         .nav-btn.active { color: var(--gold); }
 
@@ -555,15 +550,11 @@
             padding: 10px 20px; font-size: 13px; font-weight: 600;
             display: flex; align-items: center; gap: 8px;
             z-index: 999; opacity: 0; pointer-events: none;
-            /* GPU composited */
             transition: opacity 0.25s ease, transform 0.25s ease;
             will-change: opacity, transform;
             white-space: nowrap;
         }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         /* ── MODALS ── */
         .modal-overlay {
@@ -581,13 +572,14 @@
             border-radius: 24px 24px 0 0;
             width: 100%; max-width: 430px;
             border-top: 1px solid var(--border);
-            /* GPU composited */
             transform: translateY(40px);
             transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
             will-change: transform;
             max-height: 88vh; overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+            /* Bottom padding for iOS home bar inside modal */
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         .modal-sheet::-webkit-scrollbar { width: 3px; }
         .modal-sheet::-webkit-scrollbar-track { background: transparent; }
@@ -606,11 +598,7 @@
             display: flex; align-items: center; justify-content: center;
             transition: transform 0.2s ease, color 0.15s ease, background-color 0.15s ease;
         }
-        .modal-close:hover {
-            color: var(--gold);
-            transform: rotate(90deg);
-            background: var(--gold-dim);
-        }
+        .modal-close:hover { color: var(--gold); transform: rotate(90deg); background: var(--gold-dim); }
 
         /* ── ABOUT MODAL ── */
         .about-body, .payment-body { padding: 0 20px 28px; }
@@ -642,7 +630,6 @@
             border: 1px solid var(--border);
             margin-top: 16px;
         }
-
         .about-info-row { display: flex; align-items: center; gap: 12px; margin-bottom: 13px; }
         .about-info-row:last-child { margin-bottom: 0; }
         .about-info-icon { font-size: 18px; width: 26px; text-align: center; flex-shrink: 0; }
@@ -725,7 +712,6 @@
 
         .telebirr-info { flex: 1; min-width: 0; }
         .telebirr-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-
         .telebirr-number-row { display: flex; align-items: center; gap: 8px; }
         .telebirr-number {
             font-size: 18px; font-weight: 700;
@@ -746,12 +732,7 @@
         }
         .copy-btn:hover { transform: scale(1.1); background: rgba(138,115,86,0.2); }
         body.dark-theme .copy-btn:hover { background: rgba(201,168,76,0.18); }
-        .copy-btn.copied {
-            background: rgba(46,160,67,0.18);
-            border-color: rgba(46,160,67,0.4);
-            color: #5BCA8A;
-        }
-
+        .copy-btn.copied { background: rgba(46,160,67,0.18); border-color: rgba(46,160,67,0.4); color: #5BCA8A; }
         .telebirr-label { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
 
         /* ── REVIEW MODAL ── */
@@ -810,9 +791,7 @@
 
         /* ── ITEM DETAIL MODAL ── */
         .detail-img-wrap { position: relative; overflow: hidden; height: 260px; }
-        .detail-img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-        }
+        .detail-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .detail-img-overlay {
             position: absolute; inset: 0;
@@ -878,7 +857,7 @@
             background: var(--gold-dim); transform: translateY(-1px);
         }
 
-        /* ── REDUCED MOTION — respect user preference ── */
+        /* ── REDUCED MOTION ── */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -929,6 +908,7 @@
 
     <!-- ══════════════════ MENU SCREEN ══════════════════ -->
     <div class="screen hidden" id="menu-screen">
+        <!-- HEADER -->
         <div class="app-header">
             <div class="header-brand" onclick="goToSplash()">
                 <div class="header-logo">
@@ -946,7 +926,6 @@
             </div>
 
             <div class="header-controls">
-                <!-- Theme Toggle -->
                 <div class="theme-toggle-wrap" onclick="toggleTheme()" title="Toggle theme">
                     <span class="theme-icon">☀️</span>
                     <div class="toggle-switch light-on" id="toggle-switch">
@@ -955,7 +934,6 @@
                     <span class="theme-icon">🌙</span>
                 </div>
 
-                <!-- Language Button -->
                 <div style="position:relative">
                     <button class="lang-btn" onclick="toggleLangDropdown(event)">
                         <span>🌐</span>
@@ -963,22 +941,16 @@
                         <span style="font-size:9px;opacity:0.6">▾</span>
                     </button>
                     <div class="lang-dropdown" id="lang-dropdown">
-                        <button class="lang-option active" id="opt-en" onclick="setLang('en')">
-                            🇬🇧 English <span class="lang-check" id="check-en">✓</span>
-                        </button>
-                        <button class="lang-option" id="opt-am" onclick="setLang('am')">
-                            🇪🇹 አማርኛ <span class="lang-check" id="check-am" style="display:none">✓</span>
-                        </button>
-                        <button class="lang-option" id="opt-or" onclick="setLang('or')">
-                            🟢 Afaan Oromoo <span class="lang-check" id="check-or" style="display:none">✓</span>
-                        </button>
+                        <button class="lang-option active" id="opt-en" onclick="setLang('en')">🇬🇧 English <span class="lang-check" id="check-en">✓</span></button>
+                        <button class="lang-option" id="opt-am" onclick="setLang('am')">🇪🇹 አማርኛ <span class="lang-check" id="check-am" style="display:none">✓</span></button>
+                        <button class="lang-option" id="opt-or" onclick="setLang('or')">🟢 Afaan Oromoo <span class="lang-check" id="check-or" style="display:none">✓</span></button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- SCROLL AREA (grows between header and nav) -->
         <div class="menu-scroll">
-            <!-- Categories -->
             <div class="categories-wrap">
                 <div class="categories">
                     <button class="cat-btn active" data-cat="all" onclick="filterCat(this,'all')"><span data-en>All</span><span data-am>ሁሉም</span><span data-or>Hunduma</span></button>
@@ -992,7 +964,6 @@
                 </div>
             </div>
 
-            <!-- Filters row -->
             <div class="filters-row">
                 <div class="view-toggle">
                     <button class="view-btn active" id="grid-btn" onclick="setView('grid')" title="Grid">
@@ -1017,11 +988,10 @@
                 </div>
             </div>
 
-            <!-- Menu grid -->
             <div class="menu-grid" id="menu-grid"></div>
         </div>
 
-        <!-- Bottom Nav -->
+        <!-- BOTTOM NAV — last child of flex column, always visible -->
         <div class="bottom-nav">
             <button class="nav-btn" onclick="openModal('payment-modal')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -1075,40 +1045,28 @@
                 <div class="about-section-title"><span data-en>Our Story</span><span data-am>ታሪካችን</span><span data-or>Seenaa Keenya</span></div>
                 <p class="about-text" data-en>Welcome to Sample Coffee & Pastry — a haven of refined flavors in the heart of Adama. We craft every cup with love, sourcing the finest Ethiopian beans and pairing them with artisan pastries made fresh daily.</p>
                 <p class="about-text" data-am>እንኳን ወደ ..... — በመሃል አዳማ የሚገኝ ...። እኛን ስለመረጡ እናመሰግናለን።</p>
-                <p class="about-text" data-or>Baga nagaan gara ...... dhuftan — bakka mi'a qulqulluu Adaamaa keessatti argamu. Bunaa fi boqonnaa gaarii isiniif qopheessina.</p>
+                <p class="about-text" data-or>Baga nagaan gara ...... dhuftan — bakka mi'a qulqulluu Adaamaa keessatti argamu.</p>
                 <div class="about-info-card">
                     <div class="about-info-row">
                         <span class="about-info-icon">📍</span>
-                        <div>
-                            <div class="about-info-label">Address</div>
-                            <div class="about-info-val">G7VF+XP9 — Adama, Oromia</div>
-                        </div>
+                        <div><div class="about-info-label">Address</div><div class="about-info-val">G7VF+XP9 — Adama, Oromia</div></div>
                     </div>
                     <div class="about-info-row">
                         <span class="about-info-icon">📞</span>
-                        <div>
-                            <div class="about-info-label">Phone</div>
-                            <div class="about-info-val">0933xxxxxx</div>
-                        </div>
+                        <div><div class="about-info-label">Phone</div><div class="about-info-val">0933xxxxxx</div></div>
                     </div>
                     <div class="about-info-row">
                         <span class="about-info-icon">⭐</span>
-                        <div>
-                            <div class="about-info-label">Rating</div>
-                            <div class="about-info-val">4.8 out of 5 · Highly Rated Cafe</div>
-                        </div>
+                        <div><div class="about-info-label">Rating</div><div class="about-info-val">4.8 out of 5 · Highly Rated Cafe</div></div>
                     </div>
                     <div class="about-info-row">
                         <span class="about-info-icon">🏷️</span>
-                        <div>
-                            <div class="about-info-label">VAT &amp; Service</div>
-                            <div class="about-info-val">VAT 15% + 5% service charge included</div>
-                        </div>
+                        <div><div class="about-info-label">VAT &amp; Service</div><div class="about-info-val">VAT 15% + 5% service charge included</div></div>
                     </div>
                 </div>
                 <div class="about-note" data-en>ⓕ Items marked (F) are also available in a <strong>Fasting Option</strong>.<br>If you have any allergy or special dietary requirement, please inform a member of our team. Thank you!</div>
-                <div class="about-note" data-am>ⓕ (F) ምልክት ያላቸው ምግቦች በፆም አማራጭም ይገኛሉ።<br>አለርጂ ወይም ልዩ የአመጋገብ ፍላጎት ካለዎ፣ ለቡድናችን አባል ያሳውቁ። እናመሰግናለን!</div>
-                <div class="about-note" data-or>ⓕ (F) mallattoo qaban ni sooma'u.<br>Aleerjiif yoo qabdan garee keenya beeksisaa. Galatoomaa!</div>
+                <div class="about-note" data-am>ⓕ (F) ምልክት ያላቸው ምግቦች በፆም አማራጭም ይገኛሉ።</div>
+                <div class="about-note" data-or>ⓕ (F) mallattoo qaban ni sooma'u.</div>
             </div>
         </div>
     </div>
@@ -1118,24 +1076,15 @@
         <div class="modal-sheet">
             <div class="modal-handle"></div>
             <div class="modal-header">
-                <span class="modal-title">
-                    <span data-en>Payment Info</span><span data-am>የክፍያ መረጃ</span><span data-or>Odeeffannoo Kaffaltii</span>
-                </span>
+                <span class="modal-title"><span data-en>Payment Info</span><span data-am>የክፍያ መረጃ</span><span data-or>Odeeffannoo Kaffaltii</span></span>
                 <button class="modal-close" onclick="closeModal('payment-modal')">✕</button>
             </div>
             <div class="payment-body">
                 <div class="payment-icon-wrap">
                     <div class="payment-icon-circle">💳</div>
-                    <div class="payment-title-text">
-                        <span data-en>We Accept</span><span data-am>ክፍያ ዘዴዎች</span><span data-or>Kaffaltii Fudhanna</span>
-                    </div>
-                    <div class="payment-subtitle">
-                        <span data-en>Convenient payment options for you</span>
-                        <span data-am>ምቹ የክፍያ አማራጮች</span>
-                        <span data-or>Filannoolee kaffaltii mijataa</span>
-                    </div>
+                    <div class="payment-title-text"><span data-en>We Accept</span><span data-am>ክፍያ ዘዴዎች</span><span data-or>Kaffaltii Fudhanna</span></div>
+                    <div class="payment-subtitle"><span data-en>Convenient payment options for you</span><span data-am>ምቹ የክፍያ አማራጮች</span><span data-or>Filannoolee kaffaltii mijataa</span></div>
                 </div>
-
                 <div class="telebirr-highlight">
                     <div class="telebirr-logo">📱</div>
                     <div class="telebirr-info">
@@ -1143,51 +1092,42 @@
                         <div class="telebirr-number-row">
                             <div class="telebirr-number" id="telebirr-number-text">0933xxxxxx</div>
                             <button class="copy-btn" id="copy-telebirr-btn" onclick="copyAccountNumber('0933xxxxxx', 'copy-telebirr-btn')" title="Copy number">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
-                                </svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
                             </button>
                         </div>
-                        <div class="telebirr-label">
-                            <span data-en>Send to this number</span>
-                            <span data-am>ይህ ቁጥር ላይ ይላኩ</span>
-                            <span data-or>Lakkoofsa kanaan ergi</span>
-                        </div>
+                        <div class="telebirr-label"><span data-en>Send to this number</span><span data-am>ይህ ቁጥር ላይ ይላኩ</span><span data-or>Lakkoofsa kanaan ergi</span></div>
                     </div>
                     <div class="payment-accepted-badge">✓ <span data-en>Active</span><span data-am>ነቃ</span><span data-or>Socho'aa</span></div>
                 </div>
-
                 <div class="payment-methods-grid">
                     <div class="payment-method-card">
                         <div class="payment-method-icon">💵</div>
                         <div class="payment-method-name"><span data-en>Cash</span><span data-am>ጥሬ ገንዘብ</span><span data-or>Maallaqaa</span></div>
-                        <div class="payment-method-desc"><span data-en>Ethiopian Birr (ETB) accepted</span><span data-am>የኢትዮጵያ ብር ተቀባይነት አለው</span><span data-or>Birrii Itoophiyaa</span></div>
+                        <div class="payment-method-desc"><span data-en>Ethiopian Birr (ETB)</span><span data-am>የኢትዮጵያ ብር</span><span data-or>Birrii Itoophiyaa</span></div>
                         <div class="payment-accepted-badge">✓ <span data-en>Accepted</span><span data-am>ይቀበላል</span><span data-or>Fudhachuu</span></div>
                     </div>
                     <div class="payment-method-card">
                         <div class="payment-method-icon">🏦</div>
                         <div class="payment-method-name"><span data-en>Bank Transfer</span><span data-am>ባንክ ዝውውር</span><span data-or>Dabarsa Baankii</span></div>
-                        <div class="payment-method-desc"><span data-en>CBE, Awash &amp; major banks</span><span data-am>ንግድ ባንክ፣ አዋሽ</span><span data-or>CBE, Awash fi kkf</span></div>
+                        <div class="payment-method-desc"><span data-en>CBE, Awash &amp; more</span><span data-am>ንግድ ባንክ፣ አዋሽ</span><span data-or>CBE, Awash fi kkf</span></div>
                         <div class="payment-accepted-badge">✓ <span data-en>Accepted</span><span data-am>ይቀበላል</span><span data-or>Fudhachuu</span></div>
                     </div>
                     <div class="payment-method-card">
                         <div class="payment-method-icon">📲</div>
                         <div class="payment-method-name">CBE Birr</div>
-                        <div class="payment-method-desc"><span data-en>Commercial Bank mobile</span><span data-am>የኢትዮጵያ ንግድ ባንክ ሞባይል</span><span data-or>Mobaayila CBE</span></div>
+                        <div class="payment-method-desc"><span data-en>CBE mobile wallet</span><span data-am>የኢትዮጵያ ንግድ ባንክ</span><span data-or>Mobaayila CBE</span></div>
                         <div class="payment-accepted-badge">✓ <span data-en>Accepted</span><span data-am>ይቀበላል</span><span data-or>Fudhachuu</span></div>
                     </div>
                     <div class="payment-method-card">
                         <div class="payment-method-icon">🌐</div>
                         <div class="payment-method-name">Amole</div>
-                        <div class="payment-method-desc"><span data-en>Dashen Bank digital wallet</span><span data-am>ዳሽን ባንክ ዲጂታል</span><span data-or>Waalleetii dijitaalaa</span></div>
+                        <div class="payment-method-desc"><span data-en>Dashen digital wallet</span><span data-am>ዳሽን ባንክ ዲጂታል</span><span data-or>Waalleetii dijitaalaa</span></div>
                         <div class="payment-accepted-badge">✓ <span data-en>Accepted</span><span data-am>ይቀበላል</span><span data-or>Fudhachuu</span></div>
                     </div>
                 </div>
-
                 <div class="payment-note-box">
                     <strong><span data-en>📌 Note</span><span data-am>📌 ማስታወሻ</span><span data-or>📌 Yaadannoo</span></strong><br>
-                    <span data-en>All prices include <strong>VAT (15%)</strong> and <strong>service charge (5%)</strong>. Please confirm your order with staff before payment. Tips are appreciated but not required.</span>
+                    <span data-en>All prices include <strong>VAT (15%)</strong> and <strong>service charge (5%)</strong>.</span>
                     <span data-am>ሁሉም ዋጋዎች <strong>ቫት (15%)</strong> እና <strong>የአገልግሎት ክፍያ (5%)</strong> ያካትታሉ።</span>
                     <span data-or>Gatiin hunduma <strong>VAT (15%)</strong> fi <strong>kaffaltii tajaajilaa (5%)</strong> of keessaa qaba.</span>
                 </div>
@@ -1259,7 +1199,6 @@
     </div>
 
     <script>
-        // ── MENU DATA ──
         const menuData = [
             { id: 1,  name: "Espresso",                nameAm: "እስፕሬሶ",              nameOr: "Espresso",                      price: 80,  cat: "hot",     rating: 4.9, img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop" },
             { id: 2,  name: "Macchiato",               nameAm: "ማኪያቶ",               nameOr: "Maakiyaatoo",                   price: 100, cat: "hot",     rating: 4.9, img: "https://images.unsplash.com/photo-1485808191679-5f86510bd9d4?w=400&h=300&fit=crop" },
@@ -1309,20 +1248,19 @@
             { id: 46, name: "Water 1L",                nameAm: "ውሃ 1 ሊትር",              nameOr: "Bishaan 1L",                    price: 60,  cat: "bottled", rating: 4.0, img: "https://images.unsplash.com/photo-1559839914-17aae19cec71?w=400&h=300&fit=crop" },
         ];
 
-        // ── STATE ──
         let favorites = new Set();
         let currentCat = 'all', currentPrice = 'all', currentView = 'grid', currentSort = '';
         let reviewRating = 0, lang = 'en', isDark = false;
 
         const catLabels = { hot:'Hot Drinks', cold:'Cold Drinks', shakes:'Shakes & Frappes', juice:'Juice', mojito:'Mojito', dessert:'Desserts', bottled:'Bottled' };
         const catDescriptions = {
-            hot: "A freshly brewed hot beverage crafted with love using premium Ethiopian coffee beans. Perfect for warming up and savoring every sip.",
-            cold: "A refreshing chilled coffee creation, perfectly balanced for a cool and invigorating experience any time of day.",
-            shakes: "A rich, creamy blended drink crafted to satisfy your cravings. Thick, indulgent, and made with quality ingredients.",
-            juice: "Made from fresh, hand-selected fruits for a natural, vibrant taste. No added preservatives — just pure flavor.",
-            mojito: "A non-alcoholic mojito bursting with fresh flavors and a hint of mint. Light, zesty, and beautifully refreshing.",
-            dessert: "A decadent pastry made fresh daily by our in-house pastry chef. Every bite is a moment of pure indulgence.",
-            bottled: "A chilled bottled beverage to keep you refreshed and hydrated throughout your visit."
+            hot: "A freshly brewed hot beverage crafted with love using premium Ethiopian coffee beans.",
+            cold: "A refreshing chilled coffee creation, perfectly balanced for any time of day.",
+            shakes: "A rich, creamy blended drink made with quality ingredients.",
+            juice: "Made from fresh, hand-selected fruits. No added preservatives — just pure flavor.",
+            mojito: "A non-alcoholic mojito bursting with fresh flavors and a hint of mint.",
+            dessert: "A decadent pastry made fresh daily by our in-house pastry chef.",
+            bottled: "A chilled bottled beverage to keep you refreshed throughout your visit."
         };
         const catTags = {
             hot:     ["☕ Hot Beverage","🇪🇹 Ethiopian Beans","✦ Freshly Brewed"],
@@ -1334,51 +1272,40 @@
             bottled: ["🧊 Chilled","💧 Refreshing","✦ Ready to Drink"]
         };
 
-        // ── THEME TOGGLE — simple, no ripple DOM creation ──
         function toggleTheme() {
             isDark = !isDark;
             document.body.classList.toggle('dark-theme', isDark);
-            const sw = document.getElementById('toggle-switch');
-            sw.className = 'toggle-switch ' + (isDark ? 'dark-on' : 'light-on');
+            document.getElementById('toggle-switch').className = 'toggle-switch ' + (isDark ? 'dark-on' : 'light-on');
         }
 
-        // ── COPY ACCOUNT NUMBER ──
         function copyAccountNumber(number, btnId) {
             const btn = document.getElementById(btnId);
             const original = btn.innerHTML;
             const doShow = () => {
-                btn.classList.add('copied');
-                btn.innerHTML = '✓';
+                btn.classList.add('copied'); btn.innerHTML = '✓';
                 setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 2200);
-                const msgs = { en: '📋 Number copied!', am: '📋 ቁጥሩ ተቀድቷል!', or: '📋 Lakkoofsi haqate!' };
-                showToast(msgs[lang]);
+                showToast({ en:'📋 Number copied!', am:'📋 ቁጥሩ ተቀድቷል!', or:'📋 Lakkoofsi haqate!' }[lang]);
             };
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(number).then(doShow).catch(doShow);
-            } else {
+            if (navigator.clipboard) { navigator.clipboard.writeText(number).then(doShow).catch(doShow); }
+            else {
                 const el = document.createElement('textarea');
-                el.value = number;
-                el.style.cssText = 'position:fixed;top:-9999px;opacity:0';
-                document.body.appendChild(el);
-                el.select();
+                el.value = number; el.style.cssText = 'position:fixed;top:-9999px;opacity:0';
+                document.body.appendChild(el); el.select();
                 try { document.execCommand('copy'); } catch(_) {}
-                document.body.removeChild(el);
-                doShow();
+                document.body.removeChild(el); doShow();
             }
         }
 
-        // ── LANGUAGE ──
         function toggleLangDropdown(e) { e.stopPropagation(); document.getElementById('lang-dropdown').classList.toggle('open'); }
         document.addEventListener('click', () => document.getElementById('lang-dropdown').classList.remove('open'));
 
         function setLang(l) {
             lang = l;
             document.getElementById('lang-dropdown').classList.remove('open');
-            const labels = { en:'EN', am:'አማ', or:'OR' };
-            document.getElementById('lang-label').textContent = labels[l];
-            ['en','am','or'].forEach(code => {
-                document.getElementById('check-'+code).style.display = (code===l)?'inline':'none';
-                document.getElementById('opt-'+code).classList.toggle('active', code===l);
+            document.getElementById('lang-label').textContent = { en:'EN', am:'አማ', or:'OR' }[l];
+            ['en','am','or'].forEach(c => {
+                document.getElementById('check-'+c).style.display = c===l ? 'inline' : 'none';
+                document.getElementById('opt-'+c).classList.toggle('active', c===l);
             });
             syncLangElements(); renderMenu();
         }
@@ -1386,17 +1313,16 @@
         function syncLangElements() {
             document.querySelectorAll('[data-en],[data-am],[data-or]').forEach(el => el.style.display='none');
             document.querySelectorAll('[data-'+lang+']').forEach(el => {
-                el.style.display = (el.tagName==='DIV'||el.tagName==='P')?'block':'inline';
+                el.style.display = (el.tagName==='DIV'||el.tagName==='P') ? 'block' : 'inline';
             });
         }
 
         function getItemName(item) {
             if (lang==='am') return item.nameAm;
-            if (lang==='or') return item.nameOr||item.name;
+            if (lang==='or') return item.nameOr || item.name;
             return item.name;
         }
 
-        // ── RENDER — use DocumentFragment to batch DOM writes ──
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             let items = [...menuData];
@@ -1411,14 +1337,12 @@
 
             if (!items.length) { grid.innerHTML='<div class="no-items">✦ No items found for this filter</div>'; return; }
 
-            // Build HTML string then set once — avoids per-card layout thrash
             const isList = currentView==='list';
             grid.innerHTML = items.map((item, idx) => {
                 const isFav = favorites.has(item.id);
                 const stars = renderStars(item.rating);
                 const label = catLabels[item.cat] || item.cat;
                 const displayName = getItemName(item);
-                // Stagger delay capped at 200ms so last card doesn't wait ages
                 const delay = Math.min(idx * 35, 200);
                 return `
                 <div class="menu-card ${isList?'list-view':''}" style="animation-delay:${delay}ms" onclick="openItemDetail(${item.id})">
@@ -1445,22 +1369,19 @@
         function renderStars(r) {
             let s = '';
             for (let i = 1; i <= 5; i++) {
-                const op = i <= Math.floor(r) ? '1' : (i === Math.ceil(r) && r % 1 >= 0.5) ? '0.5' : '0.2';
+                const op = i <= Math.floor(r) ? '1' : (i===Math.ceil(r)&&r%1>=0.5) ? '0.5' : '0.2';
                 s += `<span class="star-icon" style="opacity:${op}">★</span>`;
             }
             return s;
         }
 
-        // ── FAVOURITES ──
         function toggleFav(id, btn) {
             favorites.has(id) ? favorites.delete(id) : favorites.add(id);
             const nowFav = favorites.has(id);
             btn.classList.toggle('active', nowFav);
-            const msgs = { en: nowFav?'Added to favourites ★':'Removed from favourites', am: nowFav?'ወደ ተወዳጆች ተጨምሯል ★':'ከተወዳጆች ተወግዷል', or: nowFav?'Jaallatamoo keessatti dabalame ★':'Jaallatamoo irraa haqame' };
-            showToast(msgs[lang]);
+            showToast({ en: nowFav?'Added to favourites ★':'Removed from favourites', am: nowFav?'ወደ ተወዳጆች ተጨምሯል ★':'ከተወዳጆች ተወግዷል', or: nowFav?'Jaallatamoo keessatti dabalame ★':'Jaallatamoo irraa haqame' }[lang]);
         }
 
-        // ── FILTERS ──
         function filterCat(el, cat) { document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); currentCat=cat; renderMenu(); }
         function filterPrice(el, price) { document.querySelectorAll('.price-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); currentPrice=price; renderMenu(); }
         function setView(v) {
@@ -1472,26 +1393,22 @@
         }
         function applySort() { currentSort = document.getElementById('sort-select').value; renderMenu(); }
 
-        // ── REVIEW ──
         function setRating(n) { reviewRating=n; document.querySelectorAll('.star-rate-btn').forEach((b,i)=>b.classList.toggle('lit',i<n)); }
         function submitReview() {
-            if (!reviewRating) { const msg={en:'Please select a rating',am:'እባክዎ ደረጃ ይምረጡ',or:'Sadarkaa filadhu'}; showToast(msg[lang]); return; }
+            if (!reviewRating) { showToast({en:'Please select a rating',am:'እባክዎ ደረጃ ይምረጡ',or:'Sadarkaa filadhu'}[lang]); return; }
             closeModal('review-modal');
-            const msg={en:'Review submitted! Thank you 🙏',am:'ግምገማዎ ተቀብሏል! 🙏',or:"Yaadni kee erga'ame! 🙏"};
-            showToast(msg[lang]);
+            showToast({en:'Review submitted! Thank you 🙏',am:'ግምገማዎ ተቀብሏል! 🙏',or:"Yaadni kee erga'ame! 🙏"}[lang]);
             document.getElementById('review-name').value='';
             document.getElementById('review-comment').value='';
             setRating(0);
         }
 
-        // ── MODALS ──
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
         document.querySelectorAll('.modal-overlay').forEach(o => {
             o.addEventListener('click', e => { if (e.target===o) o.classList.remove('show'); });
         });
 
-        // ── TOAST ──
         let toastTimer;
         function showToast(msg) {
             const t = document.getElementById('toast');
@@ -1501,7 +1418,6 @@
             toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
         }
 
-        // ── NAVIGATION ──
         function goToMenu() {
             document.getElementById('splash').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
@@ -1512,31 +1428,26 @@
             document.getElementById('splash').classList.remove('hidden');
         }
 
-        // ── ITEM DETAIL ──
         let currentDetailItemId = null;
         function openItemDetail(id) {
             const item = menuData.find(i=>i.id===id);
             if (!item) return;
             currentDetailItemId = id;
             const isFav = favorites.has(id);
-            const stars = renderStars(item.rating);
             const label = catLabels[item.cat] || item.cat;
             const desc = catDescriptions[item.cat] || "A delightful offering from our cafe.";
             const tags = catTags[item.cat] || [];
-            const fastingNote = item.name.includes('(F)') ? ' Items marked (F) are available in a fasting option.' : '';
             document.getElementById('detail-img').src = item.img;
             document.getElementById('detail-img').onerror = function(){ this.src='https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop'; };
-            document.getElementById('detail-img-rating').innerHTML = `${stars}<span style="margin-left:4px">${item.rating}</span>`;
+            document.getElementById('detail-img-rating').innerHTML = `${renderStars(item.rating)}<span style="margin-left:4px">${item.rating}</span>`;
             document.getElementById('detail-img-price').textContent = `ETB ${item.price}`;
             document.getElementById('detail-cat').textContent = label;
             document.getElementById('detail-name').textContent = getItemName(item);
             document.getElementById('detail-name-am').textContent = lang==='en' ? item.nameAm : item.name;
-            document.getElementById('detail-desc').textContent = desc + fastingNote;
+            document.getElementById('detail-desc').textContent = desc + (item.name.includes('(F)') ? ' Available in fasting option.' : '');
             document.getElementById('detail-tags').innerHTML = tags.map(t=>`<span class="detail-tag">${t}</span>`).join('');
-            const favBtn = document.getElementById('detail-fav-btn');
-            const favLabel = document.getElementById('detail-fav-label');
-            favBtn.classList.toggle('active', isFav);
-            favLabel.textContent = isFav ? 'Remove from Favourites' : 'Add to Favourites';
+            document.getElementById('detail-fav-btn').classList.toggle('active', isFav);
+            document.getElementById('detail-fav-label').textContent = isFav ? 'Remove from Favourites' : 'Add to Favourites';
             openModal('item-detail-modal');
         }
 
@@ -1545,16 +1456,12 @@
             const id = currentDetailItemId;
             favorites.has(id) ? favorites.delete(id) : favorites.add(id);
             const nowFav = favorites.has(id);
-            const favBtn = document.getElementById('detail-fav-btn');
-            const favLabel = document.getElementById('detail-fav-label');
-            favBtn.classList.toggle('active', nowFav);
-            favLabel.textContent = nowFav ? 'Remove from Favourites' : 'Add to Favourites';
-            const msgs = { en: nowFav?'Added to favourites ★':'Removed from favourites', am: nowFav?'ወደ ተወዳጆች ተጨምሯል ★':'ከተወዳጆች ተወግዷል', or: nowFav?'Jaallatamoo keessatti dabalame ★':'Jaallatamoo irraa haqame' };
-            showToast(msgs[lang]);
+            document.getElementById('detail-fav-btn').classList.toggle('active', nowFav);
+            document.getElementById('detail-fav-label').textContent = nowFav ? 'Remove from Favourites' : 'Add to Favourites';
+            showToast({ en: nowFav?'Added to favourites ★':'Removed from favourites', am: nowFav?'ወደ ተወዳጆች ተጨምሯል ★':'ከተወዳጆች ተወግዷል', or: nowFav?'Jaallatamoo keessatti dabalame ★':'Jaallatamoo irraa haqame' }[lang]);
             renderMenu();
         }
 
-        // ── INIT ──
         syncLangElements();
     </script>
 </body>
