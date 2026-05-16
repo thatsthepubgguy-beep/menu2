@@ -3,7 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#F4EFE6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>AK Digital marketing</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
@@ -118,16 +123,13 @@
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
                 opacity: 0.5
             }
-
             50% {
-                transform: scale(1.1);
-                opacity: 1
+                transform: scale(1.05);
+                opacity: 0.8
             }
         }
 
@@ -272,9 +274,8 @@
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(18px)
+                transform: translateY(12px)
             }
-
             to {
                 opacity: 1;
                 transform: none
@@ -833,9 +834,8 @@
         @keyframes cardIn {
             from {
                 opacity: 0;
-                transform: translateY(14px)
+                transform: translateY(10px)
             }
-
             to {
                 opacity: 1;
                 transform: none
@@ -2937,6 +2937,662 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* ── COPY BUTTON ── */
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 50px;
+            background: rgba(138, 115, 86, 0.15);
+            border: 1.5px solid rgba(138, 115, 86, 0.25);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'DM Sans', sans-serif;
+            backdrop-filter: blur(8px) saturate(130%);
+            -webkit-backdrop-filter: blur(8px) saturate(130%);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        body.dark-theme .copy-btn {
+            background: rgba(201, 168, 76, 0.12);
+            border: 1.5px solid rgba(201, 168, 76, 0.2);
+            backdrop-filter: blur(8px) saturate(120%);
+            -webkit-backdrop-filter: blur(8px) saturate(120%);
+        }
+
+        .copy-btn:hover {
+            background: rgba(138, 115, 86, 0.25);
+            border-color: rgba(138, 115, 86, 0.4);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 16px rgba(138, 115, 86, 0.2);
+        }
+
+        body.dark-theme .copy-btn:hover {
+            background: rgba(201, 168, 76, 0.2);
+            border-color: rgba(201, 168, 76, 0.35);
+            box-shadow: 0 4px 16px rgba(201, 168, 76, 0.2);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn.copied {
+            background: rgba(46, 160, 67, 0.2);
+            border-color: rgba(46, 160, 67, 0.4);
+            color: #5BCA8A;
+            animation: copyPulse 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        body.dark-theme .copy-btn.copied {
+            background: rgba(46, 160, 67, 0.15);
+            border-color: rgba(46, 160, 67, 0.3);
+        }
+
+        .copy-btn.copied:hover {
+            background: rgba(46, 160, 67, 0.25);
+            border-color: rgba(46, 160, 67, 0.5);
+            box-shadow: 0 4px 16px rgba(46, 160, 67, 0.2);
+        }
+
+        @keyframes copyPulse {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.15); }
+            60% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .copy-btn svg {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        .telebirr-highlight {
+            position: relative;
+        }
+
+        .telebirr-highlight::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .telebirr-highlight:hover::after {
+            opacity: 1;
+        }
+
+        .telebirr-info, .telebirr-logo, .copy-btn, .payment-accepted-badge {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── PERFORMANCE OPTIMIZATIONS ── */
+
+        /* GPU acceleration hints */
+        .menu-card, .cat-btn, .price-btn, .nav-btn, .payment-method-card,
+        .telebirr-highlight, .about-info-card, .lang-btn, .theme-toggle-wrap,
+        .view-btn, .sort-select, .detail-tag, .detail-fav-btn, .form-input,
+        .btn-submit-review, .copy-btn, .modal-close, .toast, .card-badge-rating,
+        .card-price-badge, .detail-img-rating, .detail-img-price {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* Contain paint for cards */
+        .menu-card {
+            contain: layout style paint;
+            content-visibility: auto;
+        }
+
+        /* Lazy backdrop-filter - only on capable devices */
+        @supports (backdrop-filter: blur(1px)) and (not (-webkit-touch-callout: none)) {
+            .app-header {
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+            }
+            body.dark-theme .app-header {
+                backdrop-filter: blur(24px) saturate(160%);
+                -webkit-backdrop-filter: blur(24px) saturate(160%);
+            }
+            .bottom-nav {
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+            }
+            body.dark-theme .bottom-nav {
+                backdrop-filter: blur(24px) saturate(160%);
+                -webkit-backdrop-filter: blur(24px) saturate(160%);
+            }
+            .menu-card {
+                backdrop-filter: blur(12px) saturate(140%);
+                -webkit-backdrop-filter: blur(12px) saturate(140%);
+            }
+            body.dark-theme .menu-card {
+                backdrop-filter: blur(14px) saturate(130%);
+                -webkit-backdrop-filter: blur(14px) saturate(130%);
+            }
+            .modal-sheet {
+                backdrop-filter: blur(28px) saturate(160%);
+                -webkit-backdrop-filter: blur(28px) saturate(160%);
+            }
+            body.dark-theme .modal-sheet {
+                backdrop-filter: blur(28px) saturate(140%);
+                -webkit-backdrop-filter: blur(28px) saturate(140%);
+            }
+            .lang-dropdown {
+                backdrop-filter: blur(20px) saturate(160%);
+                -webkit-backdrop-filter: blur(20px) saturate(160%);
+            }
+            body.dark-theme .lang-dropdown {
+                backdrop-filter: blur(20px) saturate(140%);
+                -webkit-backdrop-filter: blur(20px) saturate(140%);
+            }
+            .toast {
+                backdrop-filter: blur(16px) saturate(140%);
+                -webkit-backdrop-filter: blur(16px) saturate(140%);
+            }
+            .cat-btn {
+                backdrop-filter: blur(8px) saturate(130%);
+                -webkit-backdrop-filter: blur(8px) saturate(130%);
+            }
+            body.dark-theme .cat-btn {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            .cat-btn.active {
+                backdrop-filter: blur(12px) saturate(150%);
+                -webkit-backdrop-filter: blur(12px) saturate(150%);
+            }
+            body.dark-theme .cat-btn.active {
+                backdrop-filter: blur(12px) saturate(140%);
+                -webkit-backdrop-filter: blur(12px) saturate(140%);
+            }
+            .price-btn {
+                backdrop-filter: blur(6px) saturate(120%);
+                -webkit-backdrop-filter: blur(6px) saturate(120%);
+            }
+            body.dark-theme .price-btn {
+                backdrop-filter: blur(6px) saturate(110%);
+                -webkit-backdrop-filter: blur(6px) saturate(110%);
+            }
+            .view-toggle {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .view-toggle {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .lang-btn {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .lang-btn {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .theme-toggle-wrap {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .theme-toggle-wrap {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .about-info-card {
+                backdrop-filter: blur(12px) saturate(130%);
+                -webkit-backdrop-filter: blur(12px) saturate(130%);
+            }
+            body.dark-theme .about-info-card {
+                backdrop-filter: blur(12px) saturate(120%);
+                -webkit-backdrop-filter: blur(12px) saturate(120%);
+            }
+            .payment-method-card {
+                backdrop-filter: blur(10px) saturate(130%);
+                -webkit-backdrop-filter: blur(10px) saturate(130%);
+            }
+            body.dark-theme .payment-method-card {
+                backdrop-filter: blur(10px) saturate(120%);
+                -webkit-backdrop-filter: blur(10px) saturate(120%);
+            }
+            .telebirr-highlight {
+                backdrop-filter: blur(10px) saturate(130%);
+                -webkit-backdrop-filter: blur(10px) saturate(130%);
+            }
+            body.dark-theme .telebirr-highlight {
+                backdrop-filter: blur(10px) saturate(120%);
+                -webkit-backdrop-filter: blur(10px) saturate(120%);
+            }
+            .payment-note-box {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .payment-note-box {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .about-note {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .about-note {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .modal-close {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .modal-close {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .card-badge-rating {
+                backdrop-filter: blur(12px) saturate(150%);
+                -webkit-backdrop-filter: blur(12px) saturate(150%);
+            }
+            .card-price-badge {
+                backdrop-filter: blur(12px) saturate(150%);
+                -webkit-backdrop-filter: blur(12px) saturate(150%);
+            }
+            .detail-img-rating {
+                backdrop-filter: blur(14px) saturate(160%);
+                -webkit-backdrop-filter: blur(14px) saturate(160%);
+            }
+            .detail-img-price {
+                backdrop-filter: blur(8px) saturate(140%);
+                -webkit-backdrop-filter: blur(8px) saturate(140%);
+            }
+            .detail-tag {
+                backdrop-filter: blur(6px) saturate(120%);
+                -webkit-backdrop-filter: blur(6px) saturate(120%);
+            }
+            body.dark-theme .detail-tag {
+                backdrop-filter: blur(6px) saturate(110%);
+                -webkit-backdrop-filter: blur(6px) saturate(110%);
+            }
+            .detail-fav-btn {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .detail-fav-btn {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .form-input {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+            body.dark-theme .form-input {
+                backdrop-filter: blur(8px) saturate(110%);
+                -webkit-backdrop-filter: blur(8px) saturate(110%);
+            }
+            .copy-btn {
+                backdrop-filter: blur(8px) saturate(130%);
+                -webkit-backdrop-filter: blur(8px) saturate(130%);
+            }
+            body.dark-theme .copy-btn {
+                backdrop-filter: blur(8px) saturate(120%);
+                -webkit-backdrop-filter: blur(8px) saturate(120%);
+            }
+        }
+
+        /* Fallback for devices without backdrop-filter support */
+        @supports not (backdrop-filter: blur(1px)) {
+            .app-header {
+                background: rgba(244, 239, 230, 0.95);
+            }
+            body.dark-theme .app-header {
+                background: rgba(13, 13, 13, 0.95);
+            }
+            .bottom-nav {
+                background: rgba(244, 239, 230, 0.95);
+            }
+            body.dark-theme .bottom-nav {
+                background: rgba(13, 13, 13, 0.95);
+            }
+            .menu-card {
+                background: var(--card);
+                border: 1px solid var(--border);
+            }
+            body.dark-theme .menu-card {
+                background: var(--card);
+                border: 1px solid var(--border);
+            }
+            .modal-sheet {
+                background: var(--modal-bg);
+            }
+            body.dark-theme .modal-sheet {
+                background: var(--modal-bg);
+            }
+            .cat-btn {
+                background: var(--surface);
+            }
+            body.dark-theme .cat-btn {
+                background: var(--surface);
+            }
+            .price-btn {
+                background: var(--surface);
+            }
+            body.dark-theme .price-btn {
+                background: var(--surface);
+            }
+            .view-toggle {
+                background: var(--surface);
+            }
+            body.dark-theme .view-toggle {
+                background: var(--surface);
+            }
+            .lang-btn {
+                background: var(--surface);
+            }
+            body.dark-theme .lang-btn {
+                background: var(--surface);
+            }
+            .theme-toggle-wrap {
+                background: var(--surface);
+            }
+            body.dark-theme .theme-toggle-wrap {
+                background: var(--surface);
+            }
+            .about-info-card {
+                background: var(--surface);
+            }
+            body.dark-theme .about-info-card {
+                background: var(--surface);
+            }
+            .payment-method-card {
+                background: var(--surface);
+            }
+            body.dark-theme .payment-method-card {
+                background: var(--surface);
+            }
+            .telebirr-highlight {
+                background: var(--surface);
+            }
+            body.dark-theme .telebirr-highlight {
+                background: var(--surface);
+            }
+            .payment-note-box {
+                background: var(--gold-dim);
+            }
+            body.dark-theme .payment-note-box {
+                background: rgba(201, 168, 76, 0.06);
+            }
+            .about-note {
+                background: rgba(138, 115, 86, 0.06);
+            }
+            body.dark-theme .about-note {
+                background: rgba(201, 168, 76, 0.06);
+            }
+            .modal-close {
+                background: var(--surface);
+            }
+            body.dark-theme .modal-close {
+                background: var(--surface);
+            }
+            .card-badge-rating {
+                background: rgba(13, 13, 13, 0.85);
+            }
+            .card-price-badge {
+                background: rgba(13, 13, 13, 0.85);
+            }
+            .detail-img-rating {
+                background: rgba(13, 13, 13, 0.88);
+            }
+            .detail-img-price {
+                background: var(--gold);
+            }
+            .detail-tag {
+                background: var(--surface);
+            }
+            body.dark-theme .detail-tag {
+                background: var(--surface);
+            }
+            .detail-fav-btn {
+                background: transparent;
+            }
+            body.dark-theme .detail-fav-btn {
+                background: transparent;
+            }
+            .form-input {
+                background: var(--surface);
+            }
+            body.dark-theme .form-input {
+                background: var(--surface);
+            }
+            .copy-btn {
+                background: rgba(138, 115, 86, 0.15);
+            }
+            body.dark-theme .copy-btn {
+                background: rgba(201, 168, 76, 0.12);
+            }
+            .toast {
+                background: #1C4A30;
+            }
+        }
+
+        /* Low-end mobile optimizations */
+        @media (max-width: 430px) and (max-resolution: 2dppx) {
+            .menu-card {
+                contain: strict;
+                content-visibility: auto;
+                contain-intrinsic-size: 0 200px;
+            }
+            .menu-card:hover {
+                transform: translateY(-2px);
+            }
+            .menu-card:hover .card-img {
+                transform: scale(1.02);
+            }
+            .card-img {
+                transition: transform 0.3s ease;
+            }
+            .splash-glow {
+                display: none;
+            }
+            .ambient-particle {
+                display: none;
+            }
+            .menu-scroll {
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-y: contain;
+            }
+            .modal-sheet {
+                overscroll-behavior-y: contain;
+            }
+            .categories-wrap {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Disable heavy animations on low-end */
+        @media (prefers-reduced-motion: reduce), (max-width: 430px) and (max-resolution: 2dppx) {
+            .menu-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(91, 76, 58, 0.1);
+            }
+            body.dark-theme .menu-card:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+            .menu-card:hover .card-img {
+                transform: scale(1.02);
+            }
+            .card-img {
+                transition: transform 0.3s ease;
+            }
+            .cat-btn:hover:not(.active) {
+                transform: translateY(-1px);
+            }
+            .price-btn:hover:not(.active) {
+                transform: translateY(-1px);
+            }
+            .nav-btn:hover {
+                transform: translateY(-1px);
+            }
+            .nav-logo-ring:hover {
+                transform: scale(1.05);
+            }
+            .theme-toggle-wrap:hover {
+                transform: scale(1.02);
+            }
+            .lang-btn:hover {
+                transform: translateY(-1px);
+            }
+            .btn-splash:hover {
+                transform: translateY(-1px);
+            }
+            .payment-method-card:hover {
+                transform: translateY(-2px);
+            }
+            .telebirr-highlight:hover {
+                transform: translateY(-1px);
+            }
+            .about-info-card:hover {
+                transform: translateY(-1px);
+            }
+            .btn-submit-review:hover {
+                transform: translateY(-1px);
+            }
+            .detail-fav-btn:hover {
+                transform: translateY(-1px);
+            }
+            .detail-tag:hover {
+                transform: translateY(-1px) scale(1.02);
+            }
+            .copy-btn:hover {
+                transform: translateY(-1px) scale(1.01);
+            }
+            .splash-logo-ring:hover {
+                transform: scale(1.03);
+            }
+            .header-logo:hover {
+                transform: scale(1.05);
+            }
+            .header-brand:hover {
+                transform: translateX(1px);
+            }
+            .about-logo-circle:hover {
+                transform: scale(1.03);
+            }
+            .payment-icon-circle:hover {
+                transform: scale(1.05);
+            }
+            .modal-close:hover {
+                transform: rotate(45deg) scale(1.05);
+            }
+            .fav-btn:hover {
+                transform: scale(1.15);
+            }
+            .view-btn:hover:not(.active) {
+                transform: scale(1.05);
+            }
+            .star-rate-btn:hover {
+                transform: scale(1.1);
+            }
+            .form-input:focus {
+                transform: none;
+            }
+            .sort-select:focus {
+                transform: none;
+            }
+        }
+
+        /* Image loading optimization */
+        .card-img {
+            will-change: auto;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        /* Scroll performance */
+        .menu-scroll {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+            scroll-behavior: smooth;
+        }
+
+        .modal-sheet {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+            scroll-behavior: smooth;
+        }
+
+        .categories-wrap {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Reduce paint areas */
+        .menu-grid {
+            contain: layout;
+        }
+
+        .filters-row {
+            contain: layout style;
+        }
+
+        .categories-wrap {
+            contain: layout style;
+        }
+
+        /* Modal overlay optimization */
+        .modal-overlay {
+            will-change: opacity;
+            contain: layout style paint;
+        }
+
+        .modal-overlay.show {
+            will-change: auto;
+        }
+
+        /* Splash screen optimization */
+        #splash {
+            contain: layout style paint;
+        }
+
+        /* Menu screen optimization */
+        #menu-screen {
+            contain: layout;
+        }
+
+        /* Prevent text selection on interactive elements */
+        .cat-btn, .price-btn, .view-btn, .nav-btn, .fav-btn,
+        .lang-btn, .theme-toggle-wrap, .modal-close, .copy-btn,
+        .btn-splash, .btn-submit-review, .detail-fav-btn,
+        .splash-about-link, .header-brand, .nav-center-logo {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Touch action optimization */
+        .menu-card, .cat-btn, .price-btn, .view-btn, .nav-btn,
+        .payment-method-card, .lang-option, .modal-close, .copy-btn,
+        .btn-splash, .btn-submit-review, .detail-fav-btn,
+        .splash-about-link, .header-brand, .nav-center-logo,
+        .theme-toggle-wrap, .lang-btn, .fav-btn {
+            touch-action: manipulation;
+        }
 </style>
 <base target="_blank">
 </head>
@@ -3246,17 +3902,29 @@
                     </div>
                 </div>
 
-                <div class="telebirr-highlight">
+                <div class="telebirr-highlight" id="telebirr-card">
                     <div class="telebirr-logo">📱</div>
                     <div class="telebirr-info">
                         <div class="telebirr-name">TeleBirr</div>
-                        <div class="telebirr-number">0933xxxxxx</div>
+                        <div class="telebirr-number" id="telebirr-num">0933xxxxxx</div>
                         <div class="telebirr-label">
                             <span data-en>Send to this number</span>
                             <span data-am>ይህ ቁጥር ላይ ይላኩ</span>
                             <span data-or>Lakkoofsa kanaan ergi</span>
                         </div>
                     </div>
+                    <button class="copy-btn" id="copy-btn" onclick="copyAccountNumber(event)" title="Copy number">
+                        <svg id="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <svg id="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="display:none">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span id="copy-label" data-en>Copy</span>
+                        <span id="copy-label" data-am>አታክት</span>
+                        <span id="copy-label" data-or>Koopii</span>
+                    </button>
                     <div class="payment-accepted-badge">✓ <span data-en>Active</span><span data-am>ነቃ</span><span
                             data-or>Socho'aa</span></div>
                 </div>
@@ -3480,6 +4148,69 @@
             bottled: ["🧊 Chilled", "💧 Refreshing", "✦ Ready to Drink"]
         };
 
+        // ── COPY ACCOUNT NUMBER ──
+        function copyAccountNumber(e) {
+            e.stopPropagation();
+            const num = document.getElementById('telebirr-num').textContent.trim();
+            const btn = document.getElementById('copy-btn');
+            const copyIcon = document.getElementById('copy-icon');
+            const checkIcon = document.getElementById('check-icon');
+
+            navigator.clipboard.writeText(num).then(() => {
+                btn.classList.add('copied');
+                copyIcon.style.display = 'none';
+                checkIcon.style.display = 'inline';
+
+                const msgs = {
+                    en: 'Copied!',
+                    am: 'ተቀድሷል!',
+                    or: 'Koopiime!'
+                };
+                showToast(msgs[lang]);
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    copyIcon.style.display = 'inline';
+                    checkIcon.style.display = 'none';
+                }, 2200);
+            }).catch(() => {
+                // Fallback for older browsers or clipboard denied
+                const textarea = document.createElement('textarea');
+                textarea.value = num;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    btn.classList.add('copied');
+                    copyIcon.style.display = 'none';
+                    checkIcon.style.display = 'inline';
+
+                    const msgs = {
+                        en: 'Copied!',
+                        am: 'ተቀድሷል!',
+                        or: 'Koopiime!'
+                    };
+                    showToast(msgs[lang]);
+
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        copyIcon.style.display = 'inline';
+                        checkIcon.style.display = 'none';
+                    }, 2200);
+                } catch (err) {
+                    const msgs = {
+                        en: 'Failed to copy',
+                        am: 'መቅዳት አልተቻለም',
+                        or: 'Koopiin hin milkoofne'
+                    };
+                    showToast(msgs[lang]);
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+
         // ── THEME ──
         function toggleTheme() {
             const wrap = document.querySelector('.theme-toggle-wrap');
@@ -3490,19 +4221,7 @@
             const sw = document.getElementById('toggle-switch');
             sw.className = 'toggle-switch ' + (isDark ? 'dark-on' : 'light-on');
 
-            // Smooth glow effect on toggle
-            const glow = document.createElement('div');
-            glow.style.cssText = 'position:fixed;inset:0;background:var(--gold);opacity:0;pointer-events:none;z-index:9999;transition:opacity 0.6s ease;';
-            document.body.appendChild(glow);
-            requestAnimationFrame(() => {
-                glow.style.opacity = '0.03';
-                setTimeout(() => {
-                    glow.style.opacity = '0';
-                    setTimeout(() => glow.remove(), 600);
-                }, 200);
-            });
-
-            setTimeout(() => wrap.classList.remove('theme-toggle-animating'), 600);
+            setTimeout(() => wrap.classList.remove('theme-toggle-animating'), 500);
         }
 
         // ── LANGUAGE ──
@@ -3548,50 +4267,63 @@
         // ── RENDER ──
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
-            let items = [...menuData];
+            let items = menuData;
 
             if (currentCat !== 'all') items = items.filter(i => i.cat === currentCat);
             if (currentPrice === 'low') items = items.filter(i => i.price < 100);
             else if (currentPrice === 'mid') items = items.filter(i => i.price >= 100 && i.price <= 250);
             else if (currentPrice === 'high') items = items.filter(i => i.price > 250);
 
-            if (currentSort === 'price-asc') items.sort((a, b) => a.price - b.price);
-            else if (currentSort === 'price-desc') items.sort((a, b) => b.price - a.price);
-            else if (currentSort === 'rating') items.sort((a, b) => b.rating - a.rating);
-            else if (currentSort === 'name') items.sort((a, b) => a.name.localeCompare(b.name));
+            if (currentSort === 'price-asc') items = items.slice().sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-desc') items = items.slice().sort((a, b) => b.price - a.price);
+            else if (currentSort === 'rating') items = items.slice().sort((a, b) => b.rating - a.rating);
+            else if (currentSort === 'name') items = items.slice().sort((a, b) => a.name.localeCompare(b.name));
 
             if (items.length === 0) {
-                grid.innerHTML = `<div class="no-items">✦ No items found for this filter</div>`;
+                grid.innerHTML = '<div class="no-items">✦ No items found for this filter</div>';
                 return;
             }
 
-            grid.innerHTML = items.map((item, idx) => {
+            const isList = currentView === 'list';
+            const frag = document.createDocumentFragment();
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
                 const isFav = favorites.has(item.id);
-                const isList = currentView === 'list';
                 const stars = renderStars(item.rating);
                 const label = catLabels[item.cat] || item.cat;
                 const displayName = getItemName(item);
-                return `
-    <div class="menu-card ${isList ? 'list-view' : ''}" style="animation-delay:${idx * 0.04}s" onclick="openItemDetail(${item.id})">
-      <div class="card-img-wrap">
-        <img class="card-img" src="${item.img}" alt="${displayName}" loading="lazy"
-          onerror="this.src='https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop'">
-        <div class="card-badge-rating">${stars}<span>${item.rating}</span></div>
-        <div class="card-price-badge">ETB ${item.price}</div>
-      </div>
-      <div class="card-body">
-        <div class="card-top">
-          <div class="card-name">${displayName}</div>
-          <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFav(${item.id},this)" title="Favourite">★</button>
-        </div>
-        <span class="card-cat-pill">${label}</span>
-        <div style="margin-top:4px">
-          <span class="card-price-inline">${item.price}</span>
-          <span class="card-etb">ETB</span>
-        </div>
-      </div>
-    </div>`;
-            }).join('');
+
+                const card = document.createElement('div');
+                card.className = 'menu-card' + (isList ? ' list-view' : '');
+                card.style.animationDelay = (i * 0.04) + 's';
+                card.onclick = (function(id) { return function() { openItemDetail(id); }; })(item.id);
+
+                card.innerHTML = 
+                    '<div class="card-img-wrap">' +
+                        '<img class="card-img" src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E" data-src="' + item.img + '" alt="' + displayName + '" loading="lazy" ' +
+                        'onerror="this.src='https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop'">' +
+                        '<div class="card-badge-rating">' + stars + '<span>' + item.rating + '</span></div>' +
+                        '<div class="card-price-badge">ETB ' + item.price + '</div>' +
+                    '</div>' +
+                    '<div class="card-body">' +
+                        '<div class="card-top">' +
+                            '<div class="card-name">' + displayName + '</div>' +
+                            '<button class="fav-btn ' + (isFav ? 'active' : '') + '" ' +
+                            'onclick="event.stopPropagation();toggleFav(' + item.id + ',this)" title="Favourite">★</button>' +
+                        '</div>' +
+                        '<span class="card-cat-pill">' + label + '</span>' +
+                        '<div style="margin-top:4px">' +
+                            '<span class="card-price-inline">' + item.price + '</span>' +
+                            '<span class="card-etb">ETB</span>' +
+                        '</div>' +
+                    '</div>';
+
+                frag.appendChild(card);
+            }
+
+            grid.innerHTML = '';
+            grid.appendChild(frag);
         }
 
         function renderStars(r) {
@@ -3621,11 +4353,13 @@
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             currentCat = cat; renderMenu();
+            setTimeout(observeImages, 50);
         }
         function filterPrice(el, price) {
             document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             currentPrice = price; renderMenu();
+            setTimeout(observeImages, 50);
         }
         function setView(v) {
             currentView = v;
@@ -3633,10 +4367,12 @@
             document.getElementById('list-btn').classList.toggle('active', v === 'list');
             document.getElementById('menu-grid').className = 'menu-grid' + (v === 'list' ? ' list-view' : '');
             renderMenu();
+            setTimeout(observeImages, 50);
         }
         function applySort() {
             currentSort = document.getElementById('sort-select').value;
             renderMenu();
+            setTimeout(observeImages, 50);
         }
 
         // ── REVIEW ──
@@ -3679,6 +4415,7 @@
             document.getElementById('splash').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
             renderMenu();
+            setTimeout(observeImages, 100);
         }
         function goToSplash() {
             document.getElementById('menu-screen').classList.add('hidden');
@@ -3738,8 +4475,43 @@
             renderMenu();
         }
 
+        // ── LAZY IMAGE LOADING ──
+        let imgObserver;
+        if ('IntersectionObserver' in window) {
+            imgObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        imgObserver.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '50px 0px', threshold: 0.01 });
+        }
+
+        function observeImages() {
+            if (imgObserver) {
+                document.querySelectorAll('.card-img[data-src]').forEach(img => {
+                    imgObserver.observe(img);
+                });
+            }
+        }
+
         // ── INIT ──
         syncLangElements();
+
+        // Preload critical images
+        const preloadImages = [
+            'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1485808191679-5f86510bd9d4?w=400&h=300&fit=crop'
+        ];
+        preloadImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
     </script>
 </body>
 
