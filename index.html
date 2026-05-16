@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ── LIGHT THEME (default) ── */
         :root {
             --gold: #8A7356;
             --gold-light: #5B4C3A;
@@ -29,11 +28,9 @@
             --nav-bg: rgba(244,239,230,0.97);
             --modal-bg: #EDE5D8;
             --splash-bg: radial-gradient(ellipse at 50% 30%, #DED1BA 0%, #F4EFE6 70%);
-            /* Nav height + safe area — used in both nav and scroll padding */
             --nav-height: 64px;
         }
 
-        /* ── DARK THEME ── */
         body.dark-theme {
             --gold: #C9A84C;
             --gold-light: #E8C96B;
@@ -57,7 +54,12 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { height: 100%; }
+
+        html {
+            height: 100%;
+            /* dvh = dynamic viewport height — shrinks when mobile browser chrome is visible */
+            height: 100dvh;
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -66,14 +68,12 @@
             max-width: 430px;
             margin: 0 auto;
             position: relative;
-            /* Let body scroll naturally so nav is never clipped */
             height: 100%;
-            min-height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             transition: background-color 0.4s ease, color 0.3s ease;
         }
 
-        /* ── SCREENS ── */
         .screen {
             position: absolute;
             inset: 0;
@@ -86,7 +86,7 @@
             transform: translateY(20px);
         }
 
-        /* ── SPLASH ── */
+        /* SPLASH */
         #splash {
             background: var(--splash-bg);
             display: flex;
@@ -94,6 +94,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            overflow-y: auto;
         }
 
         .splash-glow {
@@ -198,16 +199,15 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── MENU SCREEN — flex column filling the fixed viewport ── */
+        /* MENU SCREEN — fills the absolute screen div as a flex column */
         #menu-screen {
             display: flex;
             flex-direction: column;
-            /* Fill exactly the viewport height */
             height: 100%;
             overflow: hidden;
         }
 
-        /* ── HEADER ── */
+        /* HEADER */
         .app-header {
             position: relative;
             z-index: 50;
@@ -215,7 +215,6 @@
             border-bottom: 1px solid var(--border);
             padding: 14px 18px;
             display: flex; align-items: center; justify-content: space-between;
-            /* Fixed height so flex math is reliable */
             flex-shrink: 0;
             box-shadow: 0 2px 12px rgba(91,76,58,0.06);
             transition: background-color 0.4s ease, border-color 0.4s ease;
@@ -238,7 +237,6 @@
 
         .header-controls { display: flex; align-items: center; gap: 8px; }
 
-        /* ── THEME TOGGLE ── */
         .theme-toggle-wrap {
             display: flex; align-items: center; gap: 5px;
             padding: 5px 10px;
@@ -274,7 +272,6 @@
         }
         body.dark-theme .toggle-knob { transform: translateX(13px); }
 
-        /* Lang button */
         .lang-btn {
             display: flex; align-items: center; gap: 5px;
             padding: 6px 11px;
@@ -318,21 +315,21 @@
         .lang-option.active { color: var(--gold); font-weight: 600; }
         .lang-check { margin-left: auto; font-size: 10px; color: var(--gold); }
 
-        /* ── SCROLL AREA — grows to fill space between header and nav ── */
+        /* KEY FIX: flex:1 + min-height:0 allows this div to shrink
+           so the bottom nav is never pushed off screen */
         .menu-scroll {
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
-            /* Extra bottom padding = nav height + safe area, so last card clears the nav */
-            padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 16px) + 16px);
+            padding-bottom: 16px;
         }
         .menu-scroll::-webkit-scrollbar { width: 3px; }
         .menu-scroll::-webkit-scrollbar-track { background: transparent; }
         .menu-scroll::-webkit-scrollbar-thumb { background: rgba(138,115,86,0.2); border-radius: 3px; }
         body.dark-theme .menu-scroll::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); }
 
-        /* ── CATEGORIES ── */
         .categories-wrap {
             padding: 16px 18px 8px;
             overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -358,7 +355,6 @@
         }
         .cat-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
 
-        /* ── FILTERS ── */
         .filters-row { padding: 10px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         .view-toggle {
@@ -409,11 +405,9 @@
         }
         .price-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
 
-        /* ── MENU GRID ── */
         .menu-grid { padding: 12px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .menu-grid.list-view { grid-template-columns: 1fr; }
 
-        /* ── MENU CARD ── */
         .menu-card {
             background: var(--card);
             border-radius: var(--radius);
@@ -489,22 +483,16 @@
         .menu-card.list-view .card-name { font-size: 15px; }
         .menu-card.list-view .card-price-inline { font-size: 18px; }
 
-        /* ── BOTTOM NAV ──
-           Key fixes:
-           1. position: relative inside the flex column (not fixed/absolute)
-              so it's always the last element and never clipped
-           2. Explicit min-height so it doesn't collapse
-           3. padding-bottom covers the iOS home bar via safe-area-inset-bottom
-        ── */
+        /* BOTTOM NAV — flex-shrink:0 keeps it always visible at the bottom */
         .bottom-nav {
-            position: relative;          /* ← was fixed; now part of normal flow */
+            position: relative;
             width: 100%;
             background: var(--nav-bg);
             border-top: 1px solid var(--border);
-            /* Vertical padding: 12px top, then 12px + safe-area on bottom */
-            padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+            padding: 10px 16px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
             display: flex; align-items: center; justify-content: space-around;
-            flex-shrink: 0;              /* ← never squish */
+            flex-shrink: 0;
             z-index: 100;
             box-shadow: 0 -2px 16px rgba(91,76,58,0.06);
             transition: background-color 0.4s ease, border-color 0.4s ease;
@@ -518,7 +506,6 @@
             transition: color 0.2s ease, transform 0.2s ease;
             font-size: 10px; font-weight: 500;
             font-family: 'DM Sans', sans-serif;
-            /* Give each button a comfortable tap target */
             min-width: 56px;
             padding: 4px 0;
         }
@@ -540,7 +527,7 @@
         .nav-logo-ring svg { width: 24px; height: 24px; }
         .nav-logo-label { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
 
-        /* ── TOAST ── */
+        /* TOAST */
         .toast {
             position: fixed; top: 78px; left: 50%;
             transform: translateX(-50%) translateY(-20px);
@@ -556,7 +543,7 @@
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* ── MODALS ── */
+        /* MODALS */
         .modal-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.6);
@@ -578,7 +565,6 @@
             max-height: 88vh; overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
-            /* Bottom padding for iOS home bar inside modal */
             padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         .modal-sheet::-webkit-scrollbar { width: 3px; }
@@ -600,7 +586,6 @@
         }
         .modal-close:hover { color: var(--gold); transform: rotate(90deg); background: var(--gold-dim); }
 
-        /* ── ABOUT MODAL ── */
         .about-body, .payment-body { padding: 0 20px 28px; }
 
         .about-logo-wrap { text-align: center; margin-bottom: 20px; }
@@ -644,7 +629,6 @@
             font-size: 11px; color: var(--text-muted); line-height: 1.7;
         }
 
-        /* ── PAYMENT STYLES ── */
         .payment-icon-wrap { text-align: center; margin-bottom: 20px; }
         .payment-icon-circle {
             width: 72px; height: 72px; border-radius: 50%;
@@ -691,7 +675,6 @@
         }
         .payment-note-box strong { color: var(--gold); }
 
-        /* ── TELEBIRR HIGHLIGHT ── */
         .telebirr-highlight {
             background: var(--surface);
             border-radius: 14px; padding: 16px;
@@ -719,7 +702,6 @@
             letter-spacing: 1px;
         }
 
-        /* ── COPY BUTTON ── */
         .copy-btn {
             display: flex; align-items: center; justify-content: center;
             width: 30px; height: 30px; border-radius: 8px;
@@ -735,7 +717,6 @@
         .copy-btn.copied { background: rgba(46,160,67,0.18); border-color: rgba(46,160,67,0.4); color: #5BCA8A; }
         .telebirr-label { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
 
-        /* ── REVIEW MODAL ── */
         .review-body { padding: 8px 20px 28px; }
         .form-group { margin-bottom: 16px; }
         .form-label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; display: block; }
@@ -778,10 +759,8 @@
         .btn-submit-review:hover { transform: translateY(-2px); opacity: 0.93; }
         .btn-submit-review:active { transform: scale(0.98); }
 
-        /* ── EMPTY ── */
         .no-items { grid-column: 1/-1; padding: 36px 0; text-align: center; color: var(--text-dim); font-size: 13px; }
 
-        /* ── LANG ATTRIBUTES ── */
         [data-am], [data-or] { display: none; }
         body.lang-am [data-en], body.lang-or [data-en] { display: none; }
         body.lang-am [data-am] { display: inline; }
@@ -789,7 +768,6 @@
         body.lang-am [data-am].block-el { display: block; }
         body.lang-or [data-or].block-el { display: block; }
 
-        /* ── ITEM DETAIL MODAL ── */
         .detail-img-wrap { position: relative; overflow: hidden; height: 260px; }
         .detail-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -857,7 +835,6 @@
             background: var(--gold-dim); transform: translateY(-1px);
         }
 
-        /* ── REDUCED MOTION ── */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -870,10 +847,8 @@
 </head>
 
 <body>
-    <!-- ── TOAST ── -->
     <div class="toast" id="toast"><span>✓</span><span id="toast-msg"></span></div>
 
-    <!-- ══════════════════ SPLASH ══════════════════ -->
     <div class="screen" id="splash">
         <div class="splash-glow"></div>
         <div class="splash-logo-ring">
@@ -906,9 +881,7 @@
         </div>
     </div>
 
-    <!-- ══════════════════ MENU SCREEN ══════════════════ -->
     <div class="screen hidden" id="menu-screen">
-        <!-- HEADER -->
         <div class="app-header">
             <div class="header-brand" onclick="goToSplash()">
                 <div class="header-logo">
@@ -949,7 +922,6 @@
             </div>
         </div>
 
-        <!-- SCROLL AREA (grows between header and nav) -->
         <div class="menu-scroll">
             <div class="categories-wrap">
                 <div class="categories">
@@ -991,7 +963,6 @@
             <div class="menu-grid" id="menu-grid"></div>
         </div>
 
-        <!-- BOTTOM NAV — last child of flex column, always visible -->
         <div class="bottom-nav">
             <button class="nav-btn" onclick="openModal('payment-modal')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
@@ -1015,7 +986,6 @@
         </div>
     </div>
 
-    <!-- ══════════════════ ABOUT MODAL ══════════════════ -->
     <div class="modal-overlay" id="about-modal">
         <div class="modal-sheet">
             <div class="modal-handle"></div>
@@ -1043,7 +1013,7 @@
                 </div>
                 <div class="about-divider"></div>
                 <div class="about-section-title"><span data-en>Our Story</span><span data-am>ታሪካችን</span><span data-or>Seenaa Keenya</span></div>
-                <p class="about-text" data-en>Welcome to Sample Coffee & Pastry — a haven of refined flavors in the heart of Adama. We craft every cup with love, sourcing the finest Ethiopian beans and pairing them with artisan pastries made fresh daily.</p>
+                <p class="about-text" data-en>Welcome to Sample Coffee &amp; Pastry — a haven of refined flavors in the heart of Adama. We craft every cup with love, sourcing the finest Ethiopian beans and pairing them with artisan pastries made fresh daily.</p>
                 <p class="about-text" data-am>እንኳን ወደ ..... — በመሃል አዳማ የሚገኝ ...። እኛን ስለመረጡ እናመሰግናለን።</p>
                 <p class="about-text" data-or>Baga nagaan gara ...... dhuftan — bakka mi'a qulqulluu Adaamaa keessatti argamu.</p>
                 <div class="about-info-card">
@@ -1071,7 +1041,6 @@
         </div>
     </div>
 
-    <!-- ══════════════════ PAYMENT MODAL ══════════════════ -->
     <div class="modal-overlay" id="payment-modal">
         <div class="modal-sheet">
             <div class="modal-handle"></div>
@@ -1135,7 +1104,6 @@
         </div>
     </div>
 
-    <!-- ══════════════════ REVIEW MODAL ══════════════════ -->
     <div class="modal-overlay" id="review-modal">
         <div class="modal-sheet">
             <div class="modal-handle"></div>
@@ -1169,7 +1137,6 @@
         </div>
     </div>
 
-    <!-- ══════════════════ ITEM DETAIL MODAL ══════════════════ -->
     <div class="modal-overlay" id="item-detail-modal">
         <div class="modal-sheet" style="position:relative">
             <div class="modal-handle"></div>
